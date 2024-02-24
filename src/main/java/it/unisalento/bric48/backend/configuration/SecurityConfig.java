@@ -49,7 +49,8 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable())
-                .authorizeRequests(requests -> requests.requestMatchers("/admin/authenticate", "/admin/add").permitAll().
+                .authorizeRequests(requests -> requests.requestMatchers("/admin/authenticate", "/admin/add", "/machinery/getAll","/nearbyHeadphones/find/{}",
+                                                                         "/nearbyHeadphones/add", "/nearbyHeadphones/getAll").permitAll().
                         anyRequest().authenticated()).cors(withDefaults()).sessionManagement(management -> management
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

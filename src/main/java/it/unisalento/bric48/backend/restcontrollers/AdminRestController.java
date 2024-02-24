@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ import it.unisalento.bric48.backend.security.JwtUtilities;
 import static it.unisalento.bric48.backend.configuration.SecurityConfig.passwordEncoder;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/admin")
 public class AdminRestController {
 
