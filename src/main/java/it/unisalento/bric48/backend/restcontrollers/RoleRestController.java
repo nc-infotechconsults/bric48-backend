@@ -3,6 +3,7 @@ package it.unisalento.bric48.backend.restcontrollers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,7 @@ import it.unisalento.bric48.backend.dto.RoleDTO;
 import it.unisalento.bric48.backend.repositories.RoleRepository;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/role")
 public class RoleRestController {
 

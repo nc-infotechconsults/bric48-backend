@@ -5,7 +5,7 @@ public class BeaconDTO {
 
     String id;
     String mac;
-    String idMachinery; //mserial
+    String mserial;
 
     public String getId() {
         return id;
@@ -19,11 +19,12 @@ public class BeaconDTO {
     public void setMac(String mac) {
         this.mac = mac;
     }
-    public String getIdMachinery() {
-        return idMachinery;
+    public String getMserial() {
+        return mserial;
     }
-    public void setIdMachinery(String idMachinery) {
-        this.idMachinery = idMachinery;
+    public void setMserial(String mserial) {
+        this.mserial = mserial;
     }
+    
     
 }

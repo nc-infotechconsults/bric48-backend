@@ -61,7 +61,7 @@ public class NearbyHeadphonesRestController {
         return nearbyHeadphones;
     }
 
-    
+    // Get NearbyHeadphones by mserial
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/find/{mserial}", method= RequestMethod.GET)
     public List<NearbyHeadphonesDTO> getNearbyHeadphonesByMserial(@PathVariable("mserial") String mserial) {

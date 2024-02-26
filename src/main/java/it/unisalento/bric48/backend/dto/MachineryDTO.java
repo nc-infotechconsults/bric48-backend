@@ -5,6 +5,7 @@ public class MachineryDTO {
     String id;
     String mserial;
     String name;
+    String topic;
     String idRoom;
 
     public String getId() {
@@ -31,5 +32,12 @@ public class MachineryDTO {
     public void setIdRoom(String idRoom) {
         this.idRoom = idRoom;
     }
+    public String getTopic() {
+        return topic;
+    }
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+    
     
 }
