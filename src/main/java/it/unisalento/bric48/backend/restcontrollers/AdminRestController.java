@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ import it.unisalento.bric48.backend.repositories.AdminRepository;
 import it.unisalento.bric48.backend.security.JwtUtilities;
 
 import static it.unisalento.bric48.backend.configuration.SecurityConfig.passwordEncoder;
+
 
 @RestController
 @CrossOrigin
@@ -86,6 +88,24 @@ public class AdminRestController {
 
         adminDTO.setId(newAdmin.getId());
         adminDTO.setPassword(null);
+
+        return adminDTO;
+    }
+
+    //Get admin by email
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/find/{email}", method= RequestMethod.GET)
+    public AdminDTO getAdminByEmail(@PathVariable("email") String email) {
+
+        AdminDTO adminDTO = new AdminDTO();
+
+        Admin admin = adminRepository.findByEmail(email);
+
+        adminDTO.setId(admin.getId());
+        adminDTO.setName(admin.getName());
+        adminDTO.setSurname(admin.getSurname());
+        adminDTO.setEmail(admin.getEmail());
+        adminDTO.setPhoneNumber(admin.getPhoneNumber());
 
         return adminDTO;
     }

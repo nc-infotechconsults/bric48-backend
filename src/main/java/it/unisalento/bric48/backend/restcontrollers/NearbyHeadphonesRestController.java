@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +80,29 @@ public class NearbyHeadphonesRestController {
 
         return nearbyHeadphones;
     }
+
+    // Delete nearbyHeadphones
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteHeadphones(@RequestBody NearbyHeadphonesDTO deleteData) {
+
+        String serial = deleteData.getSerial();
+        String mserial = deleteData.getMserial();
+
+        String id = "";
+
+        for(NearbyHeadphones nearbyHeadphones : nearbyHeadphonesRepository.findByMserial(mserial)) {
+            if (nearbyHeadphones.getSerial().equals(serial)) {
+                id = nearbyHeadphones.getId();
+                nearbyHeadphonesRepository.deleteById(id);
+                return ResponseEntity.ok().build();
+            }
+        }
+
+        return ResponseEntity.badRequest().body("ID not found");
+        
+    }
+
+
 
 
 

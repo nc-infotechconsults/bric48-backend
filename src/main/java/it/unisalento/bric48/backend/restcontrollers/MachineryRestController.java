@@ -44,7 +44,6 @@ public class MachineryRestController {
     }
 
     //Get all machineries
-    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/getAll", method= RequestMethod.GET)
     public List<MachineryDTO> getAllMachineries() {
 
