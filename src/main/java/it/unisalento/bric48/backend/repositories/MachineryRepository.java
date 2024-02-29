@@ -11,6 +11,8 @@ public interface MachineryRepository extends MongoRepository<Machinery, String> 
 
     public Optional<Machinery> findById(String id);
 
+    public Machinery findByMserial(String mserial);
+
     public List<Machinery> findByIdRoom(String idRoom);
 
 }

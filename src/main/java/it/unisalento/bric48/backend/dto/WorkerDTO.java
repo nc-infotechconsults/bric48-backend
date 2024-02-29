@@ -9,7 +9,6 @@ public class WorkerDTO {
     String email;
     String phoneNumber;
     String role;
-    String idAdmin;
     String idHeadphones;
 
     public String getId() {
@@ -47,12 +46,6 @@ public class WorkerDTO {
     }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-    public String getIdAdmin() {
-        return idAdmin;
-    }
-    public void setIdAdmin(String idAdmin) {
-        this.idAdmin = idAdmin;
     }
     public String getIdHeadphones() {
         return idHeadphones;

@@ -35,6 +35,7 @@ public class MachineryRestController {
         newMachinery.setName(machineryDTO.getName());
         newMachinery.setTopic(machineryDTO.getTopic());
         newMachinery.setIdRoom(machineryDTO.getIdRoom());
+        newMachinery.setIdBranch(machineryDTO.getIdBranch());
         
         newMachinery = machineryRepository.save(newMachinery);
 
@@ -58,6 +59,7 @@ public class MachineryRestController {
             machineryDTO.setName(machinery.getName());
             machineryDTO.setTopic(machinery.getTopic());
             machineryDTO.setIdRoom(machinery.getIdRoom());
+            machineryDTO.setIdBranch(machinery.getIdBranch());
 
             machineries.add(machineryDTO);
         }
@@ -80,11 +82,30 @@ public class MachineryRestController {
             machineryDTO.setName(machinery.getName());
             machineryDTO.setTopic(machinery.getTopic());
             machineryDTO.setIdRoom(machinery.getIdRoom());
+            machineryDTO.setIdBranch(machinery.getIdBranch());
 
             machineries.add(machineryDTO);
         }
 
         return machineries;
+    }
+
+
+    //Get machinery by mserial
+    @RequestMapping(value="/find/machinery/{mserial}", method= RequestMethod.GET)
+    public MachineryDTO getMachineryByMserial(@PathVariable("mserial") String mserial) {
+
+        Machinery machinery = machineryRepository.findByMserial(mserial);
+
+        MachineryDTO machineryDTO = new MachineryDTO();
+        machineryDTO.setId(machinery.getId());
+        machineryDTO.setMserial(machinery.getMserial());
+        machineryDTO.setName(machinery.getName());
+        machineryDTO.setTopic(machinery.getTopic());
+        machineryDTO.setIdRoom(machinery.getIdRoom());
+        machineryDTO.setIdBranch(machinery.getIdBranch());
+
+        return machineryDTO;
     }
 
 }

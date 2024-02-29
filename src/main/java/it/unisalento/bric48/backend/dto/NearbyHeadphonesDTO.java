@@ -5,6 +5,8 @@ public class NearbyHeadphonesDTO {
     String id;
     String serial;  //Headphones ID
     String mserial; //Machinery ID
+    String idRoom;
+    String idBranch;
 
     public String getId() {
         return id;
@@ -23,6 +25,18 @@ public class NearbyHeadphonesDTO {
     }
     public void setMserial(String mserial) {
         this.mserial = mserial;
+    }
+    public String getIdRoom() {
+        return idRoom;
+    }
+    public void setIdRoom(String idRoom) {
+        this.idRoom = idRoom;
+    }
+    public String getIdBranch() {
+        return idBranch;
+    }
+    public void setIdBranch(String idBranch) {
+        this.idBranch = idBranch;
     }
     
 }

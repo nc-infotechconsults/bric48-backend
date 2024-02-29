@@ -51,7 +51,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeRequests(requests -> requests.requestMatchers("/admin/authenticate", "/admin/add", "/machinery/getAll","/nearbyHeadphones/find/{}",
                                                                          "/nearbyHeadphones/add", "/nearbyHeadphones/getAll", "/machinery/getAll",
-                                                                        "/beacon/find/{}", "/nearbyHeadphones/delete").permitAll().
+                                                                        "/beacon/find/{}", "/nearbyHeadphones/delete", "/machinery/find/machinery/{}", "/data/add").permitAll().
                         anyRequest().authenticated()).cors(withDefaults()).sessionManagement(management -> management
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

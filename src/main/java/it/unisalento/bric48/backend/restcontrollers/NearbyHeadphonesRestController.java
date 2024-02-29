@@ -33,6 +33,8 @@ public class NearbyHeadphonesRestController {
         NearbyHeadphones newNearbyHeadphones = new NearbyHeadphones();
         newNearbyHeadphones.setSerial(nearbyHeadphonesDTO.getSerial());
         newNearbyHeadphones.setMserial(nearbyHeadphonesDTO.getMserial());
+        newNearbyHeadphones.setIdRoom(nearbyHeadphonesDTO.getIdRoom());
+        newNearbyHeadphones.setIdBranch(nearbyHeadphonesDTO.getIdBranch());
 
         newNearbyHeadphones = nearbyHeadphonesRepository.save(newNearbyHeadphones);
 
@@ -55,6 +57,8 @@ public class NearbyHeadphonesRestController {
             nearbyHeadphonesDTO.setId(nearbyH.getId());
             nearbyHeadphonesDTO.setSerial(nearbyH.getSerial());
             nearbyHeadphonesDTO.setMserial(nearbyH.getMserial());
+            nearbyHeadphonesDTO.setIdRoom(nearbyH.getIdRoom());
+            nearbyHeadphonesDTO.setIdBranch(nearbyH.getIdBranch());
 
             nearbyHeadphones.add(nearbyHeadphonesDTO);
         }
@@ -74,12 +78,58 @@ public class NearbyHeadphonesRestController {
             nearbyHeadphonesDTO.setId(nearbyH.getId());
             nearbyHeadphonesDTO.setSerial(nearbyH.getSerial());
             nearbyHeadphonesDTO.setMserial(nearbyH.getMserial());
+            nearbyHeadphonesDTO.setIdRoom(nearbyH.getIdRoom());
+            nearbyHeadphonesDTO.setIdBranch(nearbyH.getIdBranch());
 
             nearbyHeadphones.add(nearbyHeadphonesDTO);
         }
 
         return nearbyHeadphones;
     }
+
+    
+    // Get NearbyHeadphones by idRoom
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/find/room/{idRoom}", method= RequestMethod.GET)
+    public List<NearbyHeadphonesDTO> getNearbyHeadphonesByIdRoom(@PathVariable("idRoom") String idRoom) {
+
+        List<NearbyHeadphonesDTO> nearbyHeadphones = new ArrayList<>();
+
+        for(NearbyHeadphones nearbyH : nearbyHeadphonesRepository.findByIdRoom(idRoom)) {
+            NearbyHeadphonesDTO nearbyHeadphonesDTO = new NearbyHeadphonesDTO();
+            nearbyHeadphonesDTO.setId(nearbyH.getId());
+            nearbyHeadphonesDTO.setSerial(nearbyH.getSerial());
+            nearbyHeadphonesDTO.setMserial(nearbyH.getMserial());
+            nearbyHeadphonesDTO.setIdRoom(nearbyH.getIdRoom());
+            nearbyHeadphonesDTO.setIdBranch(nearbyH.getIdBranch());
+
+            nearbyHeadphones.add(nearbyHeadphonesDTO);
+        }
+
+        return nearbyHeadphones;
+    }
+
+    // Get NearbyHeadphones by idBranch
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/find/branch/{idBranch}", method= RequestMethod.GET)
+    public List<NearbyHeadphonesDTO> getNearbyHeadphonesByIdBranch(@PathVariable("idBranch") String idBranch) {
+
+        List<NearbyHeadphonesDTO> nearbyHeadphones = new ArrayList<>();
+
+        for(NearbyHeadphones nearbyH : nearbyHeadphonesRepository.findByIdBranch(idBranch)) {
+            NearbyHeadphonesDTO nearbyHeadphonesDTO = new NearbyHeadphonesDTO();
+            nearbyHeadphonesDTO.setId(nearbyH.getId());
+            nearbyHeadphonesDTO.setSerial(nearbyH.getSerial());
+            nearbyHeadphonesDTO.setMserial(nearbyH.getMserial());
+            nearbyHeadphonesDTO.setIdRoom(nearbyH.getIdRoom());
+            nearbyHeadphonesDTO.setIdBranch(nearbyH.getIdBranch());
+
+            nearbyHeadphones.add(nearbyHeadphonesDTO);
+        }
+
+        return nearbyHeadphones;
+    }
+
 
     // Delete nearbyHeadphones
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
@@ -101,11 +151,6 @@ public class NearbyHeadphonesRestController {
         return ResponseEntity.badRequest().body("ID not found");
         
     }
-
-
-
-
-
 
 
 }

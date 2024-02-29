@@ -10,4 +10,6 @@ public interface WorkerRepository extends MongoRepository<Worker, String> {
 
     public Optional<Worker> findById(String id);
 
+    public Worker findByIdHeadphones(String idHeadphones);
+
 }

@@ -12,6 +12,7 @@ public class Machinery {
     String name;
     String topic;
     String idRoom;
+    String idBranch;
 
     public String getId() {
         return id;
@@ -42,6 +43,12 @@ public class Machinery {
     }
     public void setTopic(String topic) {
         this.topic = topic;
+    }
+    public String getIdBranch() {
+        return idBranch;
+    }
+    public void setIdBranch(String idBranch) {
+        this.idBranch = idBranch;
     }
 
 

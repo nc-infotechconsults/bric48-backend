@@ -13,4 +13,8 @@ public interface NearbyHeadphonesRepository extends MongoRepository<NearbyHeadph
 
     public List<NearbyHeadphones> findByMserial(String mserial);
 
+    public List<NearbyHeadphones> findByIdRoom(String idRoom);
+
+    public List<NearbyHeadphones> findByIdBranch(String idBranch);
+
 }
