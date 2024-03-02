@@ -2,6 +2,7 @@ package it.unisalento.bric48.backend.restcontrollers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.bric48.backend.domain.NearbyHeadphones;
@@ -133,23 +135,32 @@ public class NearbyHeadphonesRestController {
 
     // Delete nearbyHeadphones
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteHeadphones(@RequestBody NearbyHeadphonesDTO deleteData) {
+    public ResponseEntity<String> deleteHeadphones(@RequestParam("serial") String serial, @RequestParam("mserial") String mserial) {
 
-        String serial = deleteData.getSerial();
-        String mserial = deleteData.getMserial();
+   
+        nearbyHeadphonesRepository.deleteBySerialAndMserial(serial, mserial);
 
-        String id = "";
+        return ResponseEntity.ok().build();
 
-        for(NearbyHeadphones nearbyHeadphones : nearbyHeadphonesRepository.findByMserial(mserial)) {
-            if (nearbyHeadphones.getSerial().equals(serial)) {
-                id = nearbyHeadphones.getId();
-                nearbyHeadphonesRepository.deleteById(id);
-                return ResponseEntity.ok().build();
+        //return ResponseEntity.badRequest().body("ID not found");
+        
+    }
+
+
+    // Delete nearbyHeadphones by serial
+    @RequestMapping(value = "/delete/{serial}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteHeadphonesBySerial(@PathVariable("serial") String serial) {
+  
+        for(NearbyHeadphones nearbyHeadphones : nearbyHeadphonesRepository.findBySerial(serial)) {
+            nearbyHeadphonesRepository.deleteById(nearbyHeadphones.getId());
+
+            // Verifica se l'entità è stata eliminata con successo
+            Optional<NearbyHeadphones> deletedEntity = nearbyHeadphonesRepository.findById(nearbyHeadphones.getId());
+            if (!deletedEntity.isEmpty()) {
+                return ResponseEntity.badRequest().body("ID not found");
             }
         }
-
-        return ResponseEntity.badRequest().body("ID not found");
-        
+        return ResponseEntity.ok().build();
     }
 
 
