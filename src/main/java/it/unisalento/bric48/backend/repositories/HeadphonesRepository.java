@@ -10,4 +10,8 @@ public interface HeadphonesRepository extends MongoRepository<Headphones, String
 
     public Optional<Headphones> findById(String id);
 
+    public void deleteBySerial(String serial);
+
+    public Optional<Headphones> findBySerial(String serial);
+
 }

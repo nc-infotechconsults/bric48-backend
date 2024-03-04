@@ -9,6 +9,7 @@ public class Headphones {
     @Id
     String id;
     String serial;
+    String isAssociated; //True or False
 
     public String getId() {
         return id;
@@ -24,6 +25,14 @@ public class Headphones {
 
     public void setSerial(String serial) {
         this.serial = serial;
+    }
+
+    public String getIsAssociated() {
+        return isAssociated;
+    }
+
+    public void setIsAssociated(String isAssociated) {
+        this.isAssociated = isAssociated;
     }
     
     

@@ -149,7 +149,7 @@ public class NearbyHeadphonesRestController {
 
     // Delete nearbyHeadphones by serial
     @RequestMapping(value = "/delete/{serial}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteHeadphonesBySerial(@PathVariable("serial") String serial) {
+    public ResponseEntity<String> deleteNearbyHeadphonesBySerial(@PathVariable("serial") String serial) {
   
         for(NearbyHeadphones nearbyHeadphones : nearbyHeadphonesRepository.findBySerial(serial)) {
             nearbyHeadphonesRepository.deleteById(nearbyHeadphones.getId());
