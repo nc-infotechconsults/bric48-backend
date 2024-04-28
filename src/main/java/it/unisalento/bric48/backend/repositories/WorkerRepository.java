@@ -12,4 +12,6 @@ public interface WorkerRepository extends MongoRepository<Worker, String> {
 
     public Worker findByIdHeadphones(String idHeadphones);
 
+    public void deleteById(String id);
+
 }

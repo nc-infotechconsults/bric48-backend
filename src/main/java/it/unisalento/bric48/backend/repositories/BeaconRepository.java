@@ -11,6 +11,10 @@ public interface BeaconRepository extends MongoRepository<Beacon, String> {
 
     public Optional<Beacon> findById(String id);
 
+    public void deleteByMac(String mac);
+
+    public Optional<Beacon> findByMac(String mac);
+
     public List<Beacon> findByMserial(String mserial);
 
 }

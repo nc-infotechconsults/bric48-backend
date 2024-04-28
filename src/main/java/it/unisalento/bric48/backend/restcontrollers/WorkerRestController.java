@@ -1,14 +1,20 @@
 package it.unisalento.bric48.backend.restcontrollers;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.bric48.backend.domain.Worker;
@@ -44,6 +50,32 @@ public class WorkerRestController {
         return workerDTO;
     }
 
+    //Get all workers
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/getAll", method= RequestMethod.GET)
+    public List<WorkerDTO> getAllWorkers() {
+
+        List<WorkerDTO> workers = new ArrayList<>();
+
+        for(Worker worker : workerRepository.findAll()) {
+
+            WorkerDTO workerDTO = new WorkerDTO();
+
+            workerDTO.setId(worker.getId());
+            workerDTO.setName(worker.getName());
+            workerDTO.setSurname(worker.getSurname());
+            workerDTO.setRole(worker.getRole());
+            workerDTO.setRollNumber(worker.getRollNumber());
+            workerDTO.setEmail(worker.getEmail());
+            workerDTO.setPhoneNumber(worker.getPhoneNumber());
+            workerDTO.setIdHeadphones(worker.getIdHeadphones());
+
+            workers.add(workerDTO);
+        }
+
+        return workers;
+    }
+
 
     //Get worker by idHeadphones
     @PreAuthorize("hasRole('ADMIN')")
@@ -65,5 +97,80 @@ public class WorkerRestController {
 
         return workerDTO;
     }
+
+    //Get worker by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/findById/{id}", method= RequestMethod.GET)
+    public WorkerDTO getWorkerById(@PathVariable("id") String id) {
+
+        WorkerDTO workerDTO = new WorkerDTO();
+
+        Optional<Worker> workerOpt = workerRepository.findById(id);
+
+        if (workerOpt.isPresent()) {
+
+            Worker worker = workerOpt.get();
+
+            workerDTO.setId(worker.getId());
+            workerDTO.setRollNumber(worker.getRollNumber());
+            workerDTO.setName(worker.getName());
+            workerDTO.setSurname(worker.getSurname());
+            workerDTO.setEmail(worker.getEmail());
+            workerDTO.setPhoneNumber(worker.getPhoneNumber());
+            workerDTO.setRole(worker.getRole());
+            workerDTO.setIdHeadphones(worker.getIdHeadphones());
+        }
+
+        return workerDTO;
+    }
+
+    // Delete worker by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteWorkerById(@PathVariable("id") String id) {
+  
+        workerRepository.deleteById(id);
+
+        // Verifica se l'entità è stata eliminata con successo
+        Optional<Worker> deletedEntity = workerRepository.findById(id);
+        if (!deletedEntity.isEmpty()) {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    // Update idHeadphones
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateIdHeadphones", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateIdHeadphones(@RequestParam("oldIdHeadphones") String oldIdHeadphones, @RequestParam("newIdHeadphones") String newIdHeadphones) {
+
+        Worker existingWorker = workerRepository.findByIdHeadphones(oldIdHeadphones);
+
+        if (existingWorker != null) {
+            existingWorker.setIdHeadphones(newIdHeadphones);
+            existingWorker = workerRepository.save(existingWorker);
+            
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+    }
+
+    // Update worker
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateWorker", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateWorker(@RequestBody Worker editedWorker) {
+
+        Optional<Worker> existingWorkerOpt = workerRepository.findById(editedWorker.getId());
+
+        if (existingWorkerOpt.isPresent()) {
+            workerRepository.save(editedWorker);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+
+    }
+
 
 }

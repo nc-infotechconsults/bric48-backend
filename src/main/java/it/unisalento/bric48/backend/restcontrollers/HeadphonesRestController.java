@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import it.unisalento.bric48.backend.domain.Headphones;
 import it.unisalento.bric48.backend.dto.HeadphonesDTO;
@@ -64,6 +66,25 @@ public class HeadphonesRestController {
         return headphones;
     }
 
+    //Get headphones by isAssociated
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/find/{isAssociated}", method= RequestMethod.GET)
+    public List<HeadphonesDTO> getHeadphonesByIsAssociated(@PathVariable("isAssociated") String isAssociated) {
+
+        List<HeadphonesDTO> headphones = new ArrayList<>();
+
+        for(Headphones h : headphonesRepository.findByIsAssociated(isAssociated)) {
+            HeadphonesDTO headphonesDTO = new HeadphonesDTO();
+            headphonesDTO.setId(h.getId());
+            headphonesDTO.setSerial(h.getSerial());
+            headphonesDTO.setIsAssociated(h.getIsAssociated());
+
+            headphones.add(headphonesDTO);
+        }
+
+        return headphones;
+    }
+
     // Delete headphones by serial
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/delete/{serial}", method = RequestMethod.DELETE)
@@ -78,5 +99,24 @@ public class HeadphonesRestController {
         }
         return ResponseEntity.ok().build();
     }
+
+    // Update association by serial
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateAssociation", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateIsAssociated(@RequestParam("serial") String serial, @RequestParam("isAssociated") String isAssociated) {
+
+        Optional<Headphones> existingHeadphonesOpt = headphonesRepository.findBySerial(serial);
+
+        if (existingHeadphonesOpt.isPresent()) {
+            Headphones existingHeadphones = existingHeadphonesOpt.get();
+            existingHeadphones.setIsAssociated(isAssociated);
+            existingHeadphones = headphonesRepository.save(existingHeadphones);
+            
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+    }
+
 
 }
