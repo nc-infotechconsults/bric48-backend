@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.bric48.backend.domain.Beacon;
@@ -83,6 +84,27 @@ public class BeaconRestController {
         return beacons;
     }
 
+    //Get beacon by mac
+    @RequestMapping(value="/findByMac/{mac}", method= RequestMethod.GET)
+    public BeaconDTO getBeaconByMac(@PathVariable("mac") String mac) {
+
+        Optional<Beacon> beaconOpt = beaconRepository.findByMac(mac);
+
+        if (beaconOpt.isPresent()){
+            Beacon beacon = beaconOpt.get();
+
+            BeaconDTO beaconDTO = new BeaconDTO();
+            beaconDTO.setId(beacon.getId());
+            beaconDTO.setMac(beacon.getMac());
+            beaconDTO.setMserial(beacon.getMserial());
+
+            return beaconDTO;
+        }else{
+            return null;
+        }
+        
+    }
+
     // Delete beacon by mac
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/delete/{mac}", method = RequestMethod.DELETE)
@@ -97,7 +119,40 @@ public class BeaconRestController {
         }
         return ResponseEntity.ok().build();
     }
+
+
+    // Update beacon
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateBeacon", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateBeacon(@RequestBody Beacon editedBeacon) {
+
+        Optional<Beacon> existingBeaconOpt = beaconRepository.findById(editedBeacon.getId());
+
+        if (existingBeaconOpt.isPresent()) {
+            beaconRepository.save(editedBeacon);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+    }
+
     
+    // Update beacon by mserial
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateMserial", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateMserial(@RequestParam("oldMserial") String oldMserial, @RequestParam("newMserial") String newMserial) {
+
+        List<Beacon> beacons = beaconRepository.findByMserial(oldMserial);
+
+        if (beacons != null && !beacons.isEmpty()) {
+            for (Beacon beacon : beacons) {
+                beacon.setMserial(newMserial);
+                beaconRepository.save(beacon);
+            }
+        }
+
+        return ResponseEntity.ok().build();
+    }
 
 }
 

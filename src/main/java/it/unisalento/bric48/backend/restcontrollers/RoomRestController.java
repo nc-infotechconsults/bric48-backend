@@ -2,6 +2,7 @@ package it.unisalento.bric48.backend.restcontrollers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -58,6 +59,26 @@ public class RoomRestController {
         }
 
         return rooms;
+    }
+
+    
+    //Get room by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/findById/{id}", method= RequestMethod.GET)
+    public RoomDTO getRoomById(@PathVariable("id") String id) {
+
+        RoomDTO roomDTO = new RoomDTO();
+
+        Optional<Room> roomOpt = roomRepository.findById(id);
+
+        if(roomOpt.isPresent()){
+            Room room = roomOpt.get();
+
+            roomDTO.setId(room.getId());
+            roomDTO.setName(room.getName());
+            roomDTO.setIdBranch(room.getIdBranch());
+        }
+        return roomDTO;
     }
 
 

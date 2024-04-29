@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -106,6 +107,22 @@ public class MachineryRestController {
         machineryDTO.setIdBranch(machinery.getIdBranch());
 
         return machineryDTO;
+    }
+
+
+    // Delete machinery by mserial
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/delete/{mserial}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteMachineryByMserial(@PathVariable("mserial") String mserial) {
+  
+        machineryRepository.deleteByMserial(mserial);
+
+        // Verifica se l'entità è stata eliminata con successo
+        Machinery deletedEntity = machineryRepository.findByMserial(mserial);
+        if (deletedEntity != null) {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+        return ResponseEntity.ok().build();
     }
 
 }

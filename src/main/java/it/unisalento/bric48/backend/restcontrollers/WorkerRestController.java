@@ -148,12 +148,10 @@ public class WorkerRestController {
 
         if (existingWorker != null) {
             existingWorker.setIdHeadphones(newIdHeadphones);
-            existingWorker = workerRepository.save(existingWorker);
-            
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().body("ID not found");
+            existingWorker = workerRepository.save(existingWorker); 
         }
+        
+        return ResponseEntity.ok().build();
     }
 
     // Update worker
@@ -169,7 +167,6 @@ public class WorkerRestController {
         } else {
             return ResponseEntity.badRequest().body("ID not found");
         }
-
     }
 
 

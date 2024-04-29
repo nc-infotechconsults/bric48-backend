@@ -2,11 +2,13 @@ package it.unisalento.bric48.backend.restcontrollers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,6 +63,26 @@ public class BranchRestController {
         }
 
         return branches;
+    }
+
+    //Get branch by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/findById/{id}", method= RequestMethod.GET)
+    public BranchDTO getBranchById(@PathVariable("id") String id) {
+
+        BranchDTO branchDTO = new BranchDTO();
+
+        Optional<Branch> branchOpt = branchRepository.findById(id);
+
+        if(branchOpt.isPresent()){
+            Branch branch = branchOpt.get();
+
+            branchDTO.setId(branch.getId());
+            branchDTO.setName(branch.getName());
+            branchDTO.setAddress(branch.getAddress());
+            branchDTO.setIdAdmin(branch.getIdAdmin());
+        }
+        return branchDTO;
     }
 
 }
