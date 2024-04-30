@@ -13,4 +13,8 @@ public interface RoomRepository extends MongoRepository<Room, String> {
 
     public List<Room> findByIdBranch(String idBranch);
 
+    public void deleteById(String id);
+
+    public void deleteByIdBranch(String idBranch);
+
 }

@@ -13,6 +13,8 @@ public interface MachineryRepository extends MongoRepository<Machinery, String> 
 
     public Machinery findByMserial(String mserial);
 
+    public List<Machinery> findByIdBranch(String idRoom);
+    
     public List<Machinery> findByIdRoom(String idRoom);
 
     public void deleteByMserial(String mserial);

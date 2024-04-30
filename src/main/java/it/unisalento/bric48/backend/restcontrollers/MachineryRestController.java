@@ -2,6 +2,7 @@ package it.unisalento.bric48.backend.restcontrollers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.bric48.backend.domain.Machinery;
@@ -124,5 +126,55 @@ public class MachineryRestController {
         }
         return ResponseEntity.ok().build();
     }
+
+    // Update machinery
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateMachinery", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateMachinery(@RequestBody Machinery editedMachinery) {
+
+        Optional<Machinery> existingMachineryOpt = machineryRepository.findById(editedMachinery.getId());
+
+        if (existingMachineryOpt.isPresent()) {
+            machineryRepository.save(editedMachinery);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+    }
+
+
+    // Update machineries by idBranch
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateMachineriesByIdBranch", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateMachineryByIdBranch(@RequestParam("oldIdBranch") String oldIdBranch, @RequestParam("newIdBranch") String newIdBranch, @RequestParam("newIdRoom") String newIdRoom) {
+
+        List<Machinery> machineries = machineryRepository.findByIdBranch(oldIdBranch);
+
+        for (Machinery machinery : machineries) {
+            machinery.setIdBranch(newIdBranch);
+            machinery.setIdRoom(newIdRoom);
+            machineryRepository.save(machinery);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+
+    // Update machineries by idRoom
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateMachineriesByIdRoom", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateMachineryByIdRoom(@RequestParam("oldIdRoom") String oldIdRoom, @RequestParam("newIdRoom") String newIdRoom) {
+
+        List<Machinery> machineries = machineryRepository.findByIdRoom(oldIdRoom);
+
+        for (Machinery machinery : machineries) {
+            machinery.setIdRoom(newIdRoom);
+            machineryRepository.save(machinery);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+
 
 }

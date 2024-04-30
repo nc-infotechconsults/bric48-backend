@@ -11,4 +11,6 @@ public interface BranchRepository extends MongoRepository<Branch, String> {
 
     public Optional<Branch> findById(String id);
 
+    public void deleteById(String id);
+
 }

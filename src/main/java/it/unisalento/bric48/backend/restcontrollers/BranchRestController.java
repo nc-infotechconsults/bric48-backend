@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,6 +84,36 @@ public class BranchRestController {
             branchDTO.setIdAdmin(branch.getIdAdmin());
         }
         return branchDTO;
+    }
+
+    // Delete branch by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteBranchById(@PathVariable("id") String id) {
+  
+        branchRepository.deleteById(id);
+
+        // Verifica se l'entità è stata eliminata con successo
+        Optional<Branch> deletedEntity = branchRepository.findById(id);
+        if (deletedEntity.isPresent()) {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    // Update branch
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateBranch", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateBranch(@RequestBody Branch editedBranch) {
+
+        Optional<Branch> existingBranchOpt = branchRepository.findById(editedBranch.getId());
+
+        if (existingBranchOpt.isPresent()) {
+            branchRepository.save(editedBranch);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
     }
 
 }

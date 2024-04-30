@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +80,53 @@ public class RoomRestController {
             roomDTO.setIdBranch(room.getIdBranch());
         }
         return roomDTO;
+    }
+
+    // Delete room by id
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteRoomById(@PathVariable("id") String id) {
+  
+        roomRepository.deleteById(id);
+
+        // Verifica se l'entità è stata eliminata con successo
+        Optional<Room> deletedEntity = roomRepository.findById(id);
+        if (deletedEntity.isPresent()) {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
+    // Delete rooms by idBranch
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/deleteByBranch/{idBranch}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteRoomsByIdBranch(@PathVariable("idBranch") String idBranch) {
+  
+        roomRepository.deleteByIdBranch(idBranch);
+
+        // Verifica se le entità sono state eliminate con successo
+        List<Room> deletedEntities = roomRepository.findByIdBranch(idBranch);
+        if (!deletedEntities.isEmpty()) {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
+    // Update room
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateRoom", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateRoom(@RequestBody Room editedRoom) {
+
+        Optional<Room> existingRoomOpt = roomRepository.findById(editedRoom.getId());
+
+        if (existingRoomOpt.isPresent()) {
+            roomRepository.save(editedRoom);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
     }
 
 
