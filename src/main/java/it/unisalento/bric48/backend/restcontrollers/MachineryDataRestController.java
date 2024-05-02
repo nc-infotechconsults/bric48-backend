@@ -94,7 +94,30 @@ public class MachineryDataRestController {
         }
 
         return data;
+    }
 
+
+    //Get all data
+    @RequestMapping(value="/getAll", method= RequestMethod.GET)
+    public List<MachineryDataDTO> getAllData() {
+
+        List<MachineryDataDTO> dataArray = new ArrayList<>();
+
+        for(MachineryData data : machineryDataRepository.findAll()) {
+
+            MachineryDataDTO dataDTO = new MachineryDataDTO();
+
+            dataDTO.setId(data.getId());
+            dataDTO.setMserial(data.getMserial());
+            dataDTO.setType(data.getType());
+            dataDTO.setDescription(data.getDescription());
+            dataDTO.setValue(data.getValue());
+            dataDTO.setTimestamp(data.getTimestamp());
+
+            dataArray.add(dataDTO);
+        }
+
+        return dataArray;
     }
     
 }
