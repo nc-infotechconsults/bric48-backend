@@ -2,9 +2,11 @@ package it.unisalento.bric48.backend.restcontrollers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +38,7 @@ public class MachineryDataRestController {
         newMachineryData.setType(machineryDataDTO.getType());
         newMachineryData.setValue(machineryDataDTO.getValue());
         newMachineryData.setDescription(machineryDataDTO.getDescription());
+        newMachineryData.setIsSolved(machineryDataDTO.getIsSolved());
         newMachineryData.setTimestamp(machineryDataDTO.getTimestamp());
         
         newMachineryData = machineryDataRepository.save(newMachineryData);
@@ -61,6 +64,7 @@ public class MachineryDataRestController {
             machineryDataDTO.setType(machineryData.getType());
             machineryDataDTO.setValue(machineryData.getValue());
             machineryDataDTO.setDescription(machineryData.getDescription());
+            machineryDataDTO.setIsSolved(machineryData.getIsSolved());
             machineryDataDTO.setTimestamp(machineryData.getTimestamp());
             machineryDataDTO.setMserial(machineryData.getMserial());
 
@@ -72,24 +76,29 @@ public class MachineryDataRestController {
     }
 
 
-    //Get machineryData by type and mserial
+    //Get machineryData by type and mserial and isSolved
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "/find", method = RequestMethod.GET)
-    public List<MachineryDataDTO> getMachineryDataByTypeAndMserial(@RequestParam("type") String type, @RequestParam("mserial") String mserial){
+    @RequestMapping(value = "/find/machinery", method = RequestMethod.GET)
+    public List<MachineryDataDTO> getMachineryDataByTypeAndMserialAndIsSolved(@RequestParam("type") String type, @RequestParam("mserial") String mserial, @RequestParam(value = "isSolved", required = false) String isSolved){
 
         List<MachineryDataDTO> data = new ArrayList<>();
+        List<MachineryData> machineryDataList;
 
-        for(MachineryData machineryData : machineryDataRepository.findByTypeAndMserial(type, mserial)) {
+        if (isSolved == null) {
+            machineryDataList = machineryDataRepository.findByTypeAndMserial(type, mserial);
+        } else {
+            machineryDataList = machineryDataRepository.findByTypeAndMserialAndIsSolved(type, mserial, isSolved);
+        }
 
+        for (MachineryData machineryData : machineryDataList) {
             MachineryDataDTO machineryDataDTO = new MachineryDataDTO();
-
             machineryDataDTO.setId(machineryData.getId());
             machineryDataDTO.setType(machineryData.getType());
             machineryDataDTO.setValue(machineryData.getValue());
             machineryDataDTO.setDescription(machineryData.getDescription());
+            machineryDataDTO.setIsSolved(machineryData.getIsSolved());
             machineryDataDTO.setTimestamp(machineryData.getTimestamp());
             machineryDataDTO.setMserial(machineryData.getMserial());
-
             data.add(machineryDataDTO);
         }
 
@@ -111,6 +120,7 @@ public class MachineryDataRestController {
             dataDTO.setMserial(data.getMserial());
             dataDTO.setType(data.getType());
             dataDTO.setDescription(data.getDescription());
+            dataDTO.setIsSolved(data.getIsSolved());
             dataDTO.setValue(data.getValue());
             dataDTO.setTimestamp(data.getTimestamp());
 
@@ -119,5 +129,24 @@ public class MachineryDataRestController {
 
         return dataArray;
     }
+
+
+    // Update isSolved
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateIsSolved", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateIsSolved(@RequestParam("id") String id) {
+
+        Optional<MachineryData> existingMachineryData = machineryDataRepository.findById(id);
+
+        if (existingMachineryData.isPresent()) {
+            MachineryData data = existingMachineryData.get();
+            data.setIsSolved("True");
+            data = machineryDataRepository.save(data);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    
     
 }

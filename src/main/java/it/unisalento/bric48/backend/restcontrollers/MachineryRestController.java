@@ -71,24 +71,40 @@ public class MachineryRestController {
     }
 
 
-    //Get machineries by room
+    //Get machineries by room od branch
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/find/{idRoom}", method= RequestMethod.GET)
-    public List<MachineryDTO> getMachineryByIdRoom(@PathVariable("idRoom") String idRoom) {
+    @RequestMapping(value="/find", method= RequestMethod.GET)
+    public List<MachineryDTO> getMachineryByIdRoomOrIdBranch(@RequestParam(value = "idBranch", required = false) String idBranch, @RequestParam(value = "idRoom", required = false) String idRoom) {
 
         List<MachineryDTO> machineries = new ArrayList<>();
 
-        for(Machinery machinery : machineryRepository.findByIdRoom(idRoom)) {
-            MachineryDTO machineryDTO = new MachineryDTO();
-            machineryDTO.setId(machinery.getId());
-            machineryDTO.setMserial(machinery.getMserial());
-            machineryDTO.setName(machinery.getName());
-            machineryDTO.setTopic(machinery.getTopic());
-            machineryDTO.setIdRoom(machinery.getIdRoom());
-            machineryDTO.setIdBranch(machinery.getIdBranch());
+        if(idRoom != null){
+            for(Machinery machinery : machineryRepository.findByIdRoom(idRoom)) {
+                MachineryDTO machineryDTO = new MachineryDTO();
+                machineryDTO.setId(machinery.getId());
+                machineryDTO.setMserial(machinery.getMserial());
+                machineryDTO.setName(machinery.getName());
+                machineryDTO.setTopic(machinery.getTopic());
+                machineryDTO.setIdRoom(machinery.getIdRoom());
+                machineryDTO.setIdBranch(machinery.getIdBranch());
 
-            machineries.add(machineryDTO);
+                machineries.add(machineryDTO);
+            }
+        }else{
+            for(Machinery machinery : machineryRepository.findByIdBranch(idBranch)) {
+                MachineryDTO machineryDTO = new MachineryDTO();
+                machineryDTO.setId(machinery.getId());
+                machineryDTO.setMserial(machinery.getMserial());
+                machineryDTO.setName(machinery.getName());
+                machineryDTO.setTopic(machinery.getTopic());
+                machineryDTO.setIdRoom(machinery.getIdRoom());
+                machineryDTO.setIdBranch(machinery.getIdBranch());
+
+                machineries.add(machineryDTO);
+            }
         }
+
+            
 
         return machineries;
     }

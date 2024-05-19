@@ -14,5 +14,8 @@ public interface MachineryDataRepository extends MongoRepository<MachineryData, 
     public List<MachineryData> findByType(String type);
 
     public List<MachineryData> findByTypeAndMserial(String type, String mserial);
+
+    public List<MachineryData> findByTypeAndMserialAndIsSolved(String type, String mserial, String isSolved);
+
     
 }

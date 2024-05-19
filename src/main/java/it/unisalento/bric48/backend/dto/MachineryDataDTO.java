@@ -6,6 +6,7 @@ public class MachineryDataDTO {
     String type;
     String value;
     String description;
+    String isSolved;
     String mserial;
     String timestamp;
 
@@ -44,6 +45,12 @@ public class MachineryDataDTO {
     }
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+    public String getIsSolved() {
+        return isSolved;
+    }
+    public void setIsSolved(String isSolved) {
+        this.isSolved = isSolved;
     }
     
 }
