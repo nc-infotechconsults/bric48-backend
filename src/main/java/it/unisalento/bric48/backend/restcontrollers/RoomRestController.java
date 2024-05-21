@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.unisalento.bric48.backend.domain.Machinery;
 import it.unisalento.bric48.backend.domain.Room;
 import it.unisalento.bric48.backend.dto.RoomDTO;
+import it.unisalento.bric48.backend.repositories.MachineryRepository;
 import it.unisalento.bric48.backend.repositories.RoomRepository;
 
 @RestController
@@ -26,6 +28,9 @@ public class RoomRestController {
 
     @Autowired
     RoomRepository roomRepository;
+
+    @Autowired
+    MachineryRepository machineryRepository;
 
     // Add a new room
     @PreAuthorize("hasRole('ADMIN')")
@@ -94,6 +99,15 @@ public class RoomRestController {
         if (deletedEntity.isPresent()) {
             return ResponseEntity.badRequest().body("ID not found");
         }
+
+        List<Machinery> machineries = machineryRepository.findByIdRoom(id);
+
+        for (Machinery machinery : machineries) {
+            machinery.setIdRoom("");
+            machineryRepository.save(machinery);
+        }
+
+
         return ResponseEntity.ok().build();
     }
 
@@ -110,6 +124,15 @@ public class RoomRestController {
         if (!deletedEntities.isEmpty()) {
             return ResponseEntity.badRequest().body("ID not found");
         }
+
+        List<Machinery> machineries = machineryRepository.findByIdBranch(idBranch);
+
+        for (Machinery machinery : machineries) {
+            machinery.setIdBranch("");
+            machineryRepository.save(machinery);
+        }
+
+
         return ResponseEntity.ok().build();
     }
 
@@ -121,8 +144,19 @@ public class RoomRestController {
 
         Optional<Room> existingRoomOpt = roomRepository.findById(editedRoom.getId());
 
+        Room oldRoom = existingRoomOpt.get();
+
         if (existingRoomOpt.isPresent()) {
             roomRepository.save(editedRoom);
+
+            List<Machinery> machineries = machineryRepository.findByIdBranch(oldRoom.getIdBranch());
+
+            for (Machinery machinery : machineries) {
+                machinery.setIdBranch(editedRoom.getIdBranch());
+                machinery.setIdRoom(editedRoom.getId());
+                machineryRepository.save(machinery);
+            }
+
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().body("ID not found");

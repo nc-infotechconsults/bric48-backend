@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.bric48.backend.domain.Branch;
+import it.unisalento.bric48.backend.domain.Machinery;
+import it.unisalento.bric48.backend.domain.Room;
 import it.unisalento.bric48.backend.dto.BranchDTO;
 import it.unisalento.bric48.backend.repositories.BranchRepository;
+import it.unisalento.bric48.backend.repositories.MachineryRepository;
+import it.unisalento.bric48.backend.repositories.RoomRepository;
 
 @RestController
 @CrossOrigin
@@ -26,6 +30,12 @@ public class BranchRestController {
 
     @Autowired
     BranchRepository branchRepository;
+
+    @Autowired
+    RoomRepository roomRepository;
+
+    @Autowired
+    MachineryRepository machineryRepository;
 
     // Add a new branch
     @PreAuthorize("hasRole('ADMIN')")
@@ -98,6 +108,22 @@ public class BranchRestController {
         if (deletedEntity.isPresent()) {
             return ResponseEntity.badRequest().body("ID not found");
         }
+
+        roomRepository.deleteByIdBranch(id);
+
+        // Verifica se le entità sono state eliminate con successo
+        List<Room> deletedEntities = roomRepository.findByIdBranch(id);
+        if (!deletedEntities.isEmpty()) {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
+
+        List<Machinery> machineries = machineryRepository.findByIdBranch(id);
+
+        for (Machinery machinery : machineries) {
+            machinery.setIdBranch("");
+            machineryRepository.save(machinery);
+        }
+
         return ResponseEntity.ok().build();
     }
 

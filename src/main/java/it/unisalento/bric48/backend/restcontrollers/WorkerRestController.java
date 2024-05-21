@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.unisalento.bric48.backend.domain.Headphones;
 import it.unisalento.bric48.backend.domain.Worker;
 import it.unisalento.bric48.backend.dto.WorkerDTO;
+import it.unisalento.bric48.backend.repositories.HeadphonesRepository;
 import it.unisalento.bric48.backend.repositories.WorkerRepository;
 
 @RestController
@@ -28,6 +30,9 @@ public class WorkerRestController {
 
     @Autowired
     WorkerRepository workerRepository;
+
+    @Autowired
+    HeadphonesRepository headphonesRepository;
 
     // Add a new worker
     @PreAuthorize("hasRole('ADMIN')")
@@ -46,6 +51,16 @@ public class WorkerRestController {
         newWorker = workerRepository.save(newWorker);
 
         workerDTO.setId(newWorker.getId());
+
+        if(workerDTO.getIdHeadphones() != ""){
+            Optional<Headphones> existingHeadphonesOpt = headphonesRepository.findBySerial(workerDTO.getIdHeadphones());
+
+            if (existingHeadphonesOpt.isPresent()) {
+                Headphones existingHeadphones = existingHeadphonesOpt.get();
+                existingHeadphones.setIsAssociated("True");
+                existingHeadphones = headphonesRepository.save(existingHeadphones);
+            }
+        }
 
         return workerDTO;
     }
@@ -128,6 +143,19 @@ public class WorkerRestController {
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteWorkerById(@PathVariable("id") String id) {
+
+        Optional<Worker> workerOpt = workerRepository.findById(id);
+        Worker worker = workerOpt.get();
+
+        if(worker.getIdHeadphones() != ""){
+            Optional<Headphones> existingHeadphonesOpt = headphonesRepository.findBySerial(worker.getIdHeadphones());
+
+            if (existingHeadphonesOpt.isPresent()) {
+                Headphones existingHeadphones = existingHeadphonesOpt.get();
+                existingHeadphones.setIsAssociated("False");
+                existingHeadphones = headphonesRepository.save(existingHeadphones);
+            }
+        }
   
         workerRepository.deleteById(id);
 
@@ -136,6 +164,7 @@ public class WorkerRestController {
         if (!deletedEntity.isEmpty()) {
             return ResponseEntity.badRequest().body("ID not found");
         }
+
         return ResponseEntity.ok().build();
     }
 
@@ -162,7 +191,19 @@ public class WorkerRestController {
         Optional<Worker> existingWorkerOpt = workerRepository.findById(editedWorker.getId());
 
         if (existingWorkerOpt.isPresent()) {
+
+            if(editedWorker.getIdHeadphones() != ""){
+                Optional<Headphones> existingHeadphonesOpt = headphonesRepository.findBySerial(editedWorker.getIdHeadphones());
+
+                if (existingHeadphonesOpt.isPresent()) {
+                    Headphones existingHeadphones = existingHeadphonesOpt.get();
+                    existingHeadphones.setIsAssociated("True");
+                    existingHeadphones = headphonesRepository.save(existingHeadphones);
+                }
+            }
+
             workerRepository.save(editedWorker);
+            
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().body("ID not found");

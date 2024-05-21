@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.unisalento.bric48.backend.domain.Beacon;
 import it.unisalento.bric48.backend.domain.Machinery;
 import it.unisalento.bric48.backend.dto.MachineryDTO;
+import it.unisalento.bric48.backend.repositories.BeaconRepository;
 import it.unisalento.bric48.backend.repositories.MachineryRepository;
 
 @RestController
@@ -27,6 +29,9 @@ public class MachineryRestController {
 
     @Autowired
     MachineryRepository machineryRepository;
+
+    @Autowired
+    BeaconRepository beaconRepository;
 
     // Add a new machinery
     @PreAuthorize("hasRole('ADMIN')")
@@ -140,6 +145,16 @@ public class MachineryRestController {
         if (deletedEntity != null) {
             return ResponseEntity.badRequest().body("ID not found");
         }
+
+        List<Beacon> beacons = beaconRepository.findByMserial(mserial);
+
+        if (beacons != null && !beacons.isEmpty()) {
+            for (Beacon beacon : beacons) {
+                beacon.setMserial("");
+                beaconRepository.save(beacon);
+            }
+        }
+
         return ResponseEntity.ok().build();
     }
 
