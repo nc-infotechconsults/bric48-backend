@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import it.unisalento.bric48.backend.domain.MachineryData;
 import it.unisalento.bric48.backend.dto.MachineryDataDTO;
 import it.unisalento.bric48.backend.repositories.MachineryDataRepository;
@@ -108,7 +109,7 @@ public class MachineryDataRestController {
 
     //Get all data
     @RequestMapping(value="/getAll", method= RequestMethod.GET)
-    public List<MachineryDataDTO> getAllData() {
+    public List<MachineryDataDTO> getAll() {
 
         List<MachineryDataDTO> dataArray = new ArrayList<>();
 
@@ -125,6 +126,40 @@ public class MachineryDataRestController {
             dataDTO.setTimestamp(data.getTimestamp());
 
             dataArray.add(dataDTO);
+        }
+
+        return dataArray;
+    }
+
+
+    //Get data from-to
+    @RequestMapping(value="/getDataFromTo", method= RequestMethod.GET)
+    public List<MachineryDataDTO> getFromTo(@RequestParam("from") String from, @RequestParam("to") String to) {
+
+        int c = 0;
+        int i = Integer.parseInt(from);
+        int j = Integer.parseInt(to);
+
+        List<MachineryDataDTO> dataArray = new ArrayList<>();
+
+        for(MachineryData data : machineryDataRepository.findAll()) {
+
+            if(c >= i && c <= j){
+
+                MachineryDataDTO dataDTO = new MachineryDataDTO();
+
+                dataDTO.setId(data.getId());
+                dataDTO.setMserial(data.getMserial());
+                dataDTO.setType(data.getType());
+                dataDTO.setDescription(data.getDescription());
+                dataDTO.setIsSolved(data.getIsSolved());
+                dataDTO.setValue(data.getValue());
+                dataDTO.setTimestamp(data.getTimestamp());
+
+                dataArray.add(dataDTO);
+            }
+
+            c++;
         }
 
         return dataArray;
