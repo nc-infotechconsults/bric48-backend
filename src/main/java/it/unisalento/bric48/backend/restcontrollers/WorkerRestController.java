@@ -92,6 +92,42 @@ public class WorkerRestController {
     }
 
 
+    //Get workers from-to
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/getWorkersFromTo", method= RequestMethod.GET)
+    public List<WorkerDTO> getWorkersFromTo(@RequestParam("from") String from, @RequestParam("to") String to) {
+
+        int c = 1;
+        int i = Integer.parseInt(from);
+        int j = Integer.parseInt(to);
+
+        List<WorkerDTO> workers = new ArrayList<>();
+
+        for(Worker worker : workerRepository.findAll()) {
+
+            if(c >= i && c <= j){
+
+                WorkerDTO workerDTO = new WorkerDTO();
+
+                workerDTO.setId(worker.getId());
+                workerDTO.setName(worker.getName());
+                workerDTO.setSurname(worker.getSurname());
+                workerDTO.setRole(worker.getRole());
+                workerDTO.setRollNumber(worker.getRollNumber());
+                workerDTO.setEmail(worker.getEmail());
+                workerDTO.setPhoneNumber(worker.getPhoneNumber());
+                workerDTO.setIdHeadphones(worker.getIdHeadphones());
+
+                workers.add(workerDTO);
+            }
+
+            c++;
+        }
+
+        return workers;
+    }
+
+
     //Get worker by idHeadphones
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/find/{idHeadphones}", method= RequestMethod.GET)

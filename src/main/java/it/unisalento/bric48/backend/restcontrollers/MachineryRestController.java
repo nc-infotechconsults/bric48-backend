@@ -75,6 +75,36 @@ public class MachineryRestController {
         return machineries;
     }
 
+    //Get machineries from-to
+    @RequestMapping(value="/getMachineriesFromTo", method= RequestMethod.GET)
+    public List<MachineryDTO> getMachineriesFromTo(@RequestParam("from") String from, @RequestParam("to") String to) {
+
+        int c = 1;
+        int i = Integer.parseInt(from);
+        int j = Integer.parseInt(to);
+
+        List<MachineryDTO> machineries = new ArrayList<>();
+
+        for(Machinery machinery : machineryRepository.findAll()) {
+
+            if(c >= i && c <= j){
+
+                MachineryDTO machineryDTO = new MachineryDTO();
+
+                machineryDTO.setId(machinery.getId());
+                machineryDTO.setMserial(machinery.getMserial());
+                machineryDTO.setName(machinery.getName());
+                machineryDTO.setTopic(machinery.getTopic());
+                machineryDTO.setIdRoom(machinery.getIdRoom());
+                machineryDTO.setIdBranch(machinery.getIdBranch());
+
+                machineries.add(machineryDTO);
+            }
+        }
+
+        return machineries;
+    }
+
 
     //Get machineries by room od branch
     @PreAuthorize("hasRole('ADMIN')")

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.bric48.backend.domain.Machinery;
@@ -62,6 +63,34 @@ public class RoomRestController {
             roomDTO.setIdBranch(room.getIdBranch());
 
             rooms.add(roomDTO);
+        }
+
+        return rooms;
+    }
+
+    //Get rooms by branch from to
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/getRoomsFromTo", method= RequestMethod.GET)
+    public List<RoomDTO> getRoomsByIdBranchFromTO(@RequestParam("idBranch") String idBranch, @RequestParam("from") String from, @RequestParam("to") String to) {
+
+        int c = 1;
+        int i = Integer.parseInt(from);
+        int j = Integer.parseInt(to);
+
+        List<RoomDTO> rooms = new ArrayList<>();
+
+        for(Room room : roomRepository.findByIdBranch(idBranch)) {
+
+            if(c >= i && c <= j){
+                RoomDTO roomDTO = new RoomDTO();
+                roomDTO.setId(room.getId());
+                roomDTO.setName(room.getName());
+                roomDTO.setIdBranch(room.getIdBranch());
+
+                rooms.add(roomDTO);
+            }
+
+            c++;
         }
 
         return rooms;

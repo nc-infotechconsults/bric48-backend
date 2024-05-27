@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.bric48.backend.domain.Branch;
@@ -71,6 +72,37 @@ public class BranchRestController {
             branchDTO.setIdAdmin(branch.getIdAdmin());
 
             branches.add(branchDTO);
+        }
+
+        return branches;
+    }
+
+    // Get branches from-to
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/getBranchesFromTo", method= RequestMethod.GET)
+    public List<BranchDTO> getBranchFromTo(@RequestParam("from") String from, @RequestParam("to") String to) {
+
+        int c = 1;
+        int i = Integer.parseInt(from);
+        int j = Integer.parseInt(to);
+
+        List<BranchDTO> branches = new ArrayList<>();
+
+        for(Branch branch : branchRepository.findAll()) {
+
+            if(c >= i && c <= j){
+
+                BranchDTO branchDTO = new BranchDTO();
+
+                branchDTO.setId(branch.getId());
+                branchDTO.setAddress(branch.getAddress());
+                branchDTO.setName(branch.getName());
+                branchDTO.setIdAdmin(branch.getIdAdmin());
+
+                branches.add(branchDTO);
+            }
+
+            c++;
         }
 
         return branches;

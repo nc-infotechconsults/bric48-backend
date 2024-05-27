@@ -66,6 +66,38 @@ public class HeadphonesRestController {
         return headphones;
     }
 
+
+    //Get headphones from-to
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/getHeadphonesFromTo", method= RequestMethod.GET)
+    public List<HeadphonesDTO> getHeadphonesFromTo(@RequestParam("from") String from, @RequestParam("to") String to) {
+
+        int c = 1;
+        int i = Integer.parseInt(from);
+        int j = Integer.parseInt(to);
+
+        List<HeadphonesDTO> headphones = new ArrayList<>();
+
+        for(Headphones h : headphonesRepository.findAll()) {
+
+            if(c >= i && c <= j){
+
+                HeadphonesDTO headphonesDTO = new HeadphonesDTO();
+
+                headphonesDTO.setId(h.getId());
+                headphonesDTO.setSerial(h.getSerial());
+                headphonesDTO.setIsAssociated(h.getIsAssociated());
+
+                headphones.add(headphonesDTO);
+            }
+
+            c++;
+        }
+
+        return headphones;
+    }
+
+
     //Get headphones by isAssociated
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/find/{isAssociated}", method= RequestMethod.GET)

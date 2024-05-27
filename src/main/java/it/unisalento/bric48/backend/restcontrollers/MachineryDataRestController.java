@@ -136,7 +136,7 @@ public class MachineryDataRestController {
     @RequestMapping(value="/getDataFromTo", method= RequestMethod.GET)
     public List<MachineryDataDTO> getFromTo(@RequestParam("from") String from, @RequestParam("to") String to) {
 
-        int c = 0;
+        int c = 1;
         int i = Integer.parseInt(from);
         int j = Integer.parseInt(to);
 

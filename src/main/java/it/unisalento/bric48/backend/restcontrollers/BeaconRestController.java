@@ -66,6 +66,36 @@ public class BeaconRestController {
         return beacons;
     }
 
+    //Get beacons from-to
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/getBeaconsFromTo", method= RequestMethod.GET)
+    public List<BeaconDTO> getBeaconsFromTo(@RequestParam("from") String from, @RequestParam("to") String to) {
+
+        int c = 1;
+        int i = Integer.parseInt(from);
+        int j = Integer.parseInt(to);
+
+        List<BeaconDTO> beacons = new ArrayList<>();
+
+        for(Beacon beacon : beaconRepository.findAll()) {
+
+            if(c >= i && c <= j){
+
+                BeaconDTO beaconDTO = new BeaconDTO();
+
+                beaconDTO.setId(beacon.getId());
+                beaconDTO.setMac(beacon.getMac());
+                beaconDTO.setMserial(beacon.getMserial());
+
+                beacons.add(beaconDTO);
+            }
+
+            c++;
+        }
+
+        return beacons;
+    }
+
     //Get beacons by mserial
     @RequestMapping(value="/find/{mserial}", method= RequestMethod.GET)
     public List<BeaconDTO> getBeaconByMserial(@PathVariable("mserial") String mserial) {
