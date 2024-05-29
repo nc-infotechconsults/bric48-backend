@@ -22,6 +22,7 @@ import it.unisalento.bric48.backend.domain.Room;
 import it.unisalento.bric48.backend.dto.BranchDTO;
 import it.unisalento.bric48.backend.repositories.BranchRepository;
 import it.unisalento.bric48.backend.repositories.MachineryRepository;
+import it.unisalento.bric48.backend.repositories.NearbyHeadphonesRepository;
 import it.unisalento.bric48.backend.repositories.RoomRepository;
 
 @RestController
@@ -37,6 +38,9 @@ public class BranchRestController {
 
     @Autowired
     MachineryRepository machineryRepository;
+
+    @Autowired
+    NearbyHeadphonesRepository nearbyHeadphonesRepository;
 
     // Add a new branch
     @PreAuthorize("hasRole('ADMIN')")
@@ -155,6 +159,8 @@ public class BranchRestController {
             machinery.setIdBranch("");
             machineryRepository.save(machinery);
         }
+
+        nearbyHeadphonesRepository.deleteByIdBranch(id);
 
         return ResponseEntity.ok().build();
     }

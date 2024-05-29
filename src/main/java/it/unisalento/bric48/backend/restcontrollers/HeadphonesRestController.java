@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.unisalento.bric48.backend.domain.Headphones;
 import it.unisalento.bric48.backend.dto.HeadphonesDTO;
 import it.unisalento.bric48.backend.repositories.HeadphonesRepository;
+import it.unisalento.bric48.backend.repositories.NearbyHeadphonesRepository;
 
 @RestController
 @CrossOrigin
@@ -28,6 +29,9 @@ public class HeadphonesRestController {
 
     @Autowired
     HeadphonesRepository headphonesRepository;
+
+    @Autowired
+    NearbyHeadphonesRepository nearbyHeadphonesRepository;
 
     // Add a new headphones
     @PreAuthorize("hasRole('ADMIN')")
@@ -129,6 +133,9 @@ public class HeadphonesRestController {
         if (!deletedEntity.isEmpty()) {
             return ResponseEntity.badRequest().body("ID not found");
         }
+
+        nearbyHeadphonesRepository.deleteBySerial(serial);
+
         return ResponseEntity.ok().build();
     }
 

@@ -20,6 +20,7 @@ import it.unisalento.bric48.backend.domain.Machinery;
 import it.unisalento.bric48.backend.domain.Room;
 import it.unisalento.bric48.backend.dto.RoomDTO;
 import it.unisalento.bric48.backend.repositories.MachineryRepository;
+import it.unisalento.bric48.backend.repositories.NearbyHeadphonesRepository;
 import it.unisalento.bric48.backend.repositories.RoomRepository;
 
 @RestController
@@ -32,6 +33,9 @@ public class RoomRestController {
 
     @Autowired
     MachineryRepository machineryRepository;
+
+    @Autowired
+    NearbyHeadphonesRepository nearbyHeadphonesRepository;
 
     // Add a new room
     @PreAuthorize("hasRole('ADMIN')")
@@ -136,6 +140,7 @@ public class RoomRestController {
             machineryRepository.save(machinery);
         }
 
+        nearbyHeadphonesRepository.deleteByIdRoom(id);
 
         return ResponseEntity.ok().build();
     }

@@ -21,4 +21,12 @@ public interface NearbyHeadphonesRepository extends MongoRepository<NearbyHeadph
 
     public void deleteBySerialAndMserial(String serial, String mserial);
 
+    public void deleteBySerial(String serial);
+
+    public void deleteByMserial(String mserial);
+
+    public void deleteByIdRoom(String idRoom);
+
+    public void deleteByIdBranch(String idBranch);
+
 }

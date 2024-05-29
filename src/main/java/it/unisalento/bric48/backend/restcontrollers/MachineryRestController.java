@@ -21,6 +21,7 @@ import it.unisalento.bric48.backend.domain.Machinery;
 import it.unisalento.bric48.backend.dto.MachineryDTO;
 import it.unisalento.bric48.backend.repositories.BeaconRepository;
 import it.unisalento.bric48.backend.repositories.MachineryRepository;
+import it.unisalento.bric48.backend.repositories.NearbyHeadphonesRepository;
 
 @RestController
 @CrossOrigin
@@ -32,6 +33,9 @@ public class MachineryRestController {
 
     @Autowired
     BeaconRepository beaconRepository;
+
+    @Autowired
+    NearbyHeadphonesRepository nearbyHeadphonesRepository;
 
     // Add a new machinery
     @PreAuthorize("hasRole('ADMIN')")
@@ -184,6 +188,8 @@ public class MachineryRestController {
                 beaconRepository.save(beacon);
             }
         }
+
+        nearbyHeadphonesRepository.deleteByMserial(mserial);
 
         return ResponseEntity.ok().build();
     }
