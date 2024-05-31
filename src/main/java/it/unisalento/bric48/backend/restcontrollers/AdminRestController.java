@@ -26,6 +26,8 @@ import it.unisalento.bric48.backend.security.JwtUtilities;
 
 import static it.unisalento.bric48.backend.configuration.SecurityConfig.passwordEncoder;
 
+import java.util.Optional;
+
 
 @RestController
 @CrossOrigin
@@ -105,9 +107,28 @@ public class AdminRestController {
         adminDTO.setName(admin.getName());
         adminDTO.setSurname(admin.getSurname());
         adminDTO.setEmail(admin.getEmail());
+        adminDTO.setPassword(admin.getPassword());
         adminDTO.setPhoneNumber(admin.getPhoneNumber());
 
         return adminDTO;
+    }
+
+
+    // Update admin
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/updateAdmin", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateAdmin(@RequestBody Admin editedAdmin) {
+
+        Optional<Admin> existingAdminOpt = adminRepository.findById(editedAdmin.getId());
+
+        if (existingAdminOpt.isPresent()) {
+
+            adminRepository.save(editedAdmin);
+            
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("ID not found");
+        }
     }
 
 }

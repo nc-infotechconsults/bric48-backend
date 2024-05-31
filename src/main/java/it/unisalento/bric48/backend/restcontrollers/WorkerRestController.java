@@ -149,6 +149,60 @@ public class WorkerRestController {
         return workerDTO;
     }
 
+    //Get worker by email
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/findByEmail", method= RequestMethod.GET)
+    public WorkerDTO getWorkerByEmail(@RequestParam("email") String email) {
+
+        WorkerDTO workerDTO = new WorkerDTO();
+
+        Optional<Worker> workerOpt = workerRepository.findByEmail(email);
+
+        if(workerOpt.isPresent()){
+            Worker worker = workerOpt.get();
+
+            workerDTO.setId(worker.getId());
+            workerDTO.setRollNumber(worker.getRollNumber());
+            workerDTO.setName(worker.getName());
+            workerDTO.setSurname(worker.getSurname());
+            workerDTO.setEmail(worker.getEmail());
+            workerDTO.setPhoneNumber(worker.getPhoneNumber());
+            workerDTO.setRole(worker.getRole());
+            workerDTO.setIdHeadphones(worker.getIdHeadphones());
+
+        }
+
+        return workerDTO;
+        
+    }
+
+    //Get worker by rollNumber
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/findByRollNumber", method= RequestMethod.GET)
+    public WorkerDTO getWorkerByRollNumber(@RequestParam("rollNumber") String rollNumber) {
+
+        WorkerDTO workerDTO = new WorkerDTO();
+
+        Optional<Worker> workerOpt = workerRepository.findByRollNumber(rollNumber);
+
+        if(workerOpt.isPresent()){
+            Worker worker = workerOpt.get();
+
+            workerDTO.setId(worker.getId());
+            workerDTO.setRollNumber(worker.getRollNumber());
+            workerDTO.setName(worker.getName());
+            workerDTO.setSurname(worker.getSurname());
+            workerDTO.setEmail(worker.getEmail());
+            workerDTO.setPhoneNumber(worker.getPhoneNumber());
+            workerDTO.setRole(worker.getRole());
+            workerDTO.setIdHeadphones(worker.getIdHeadphones());
+
+        }
+
+        return workerDTO;
+        
+    }
+
     //Get worker by id
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/findById/{id}", method= RequestMethod.GET)

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import it.unisalento.bric48.backend.domain.Headphones;
 import it.unisalento.bric48.backend.dto.HeadphonesDTO;
 import it.unisalento.bric48.backend.repositories.HeadphonesRepository;
@@ -155,6 +154,28 @@ public class HeadphonesRestController {
         } else {
             return ResponseEntity.badRequest().body("ID not found");
         }
+    }
+
+
+    //Get headphones by serial
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value="/find", method= RequestMethod.GET)
+    public HeadphonesDTO getHeadphonesBySerial(@RequestParam("serial") String serial) {
+
+        HeadphonesDTO headphonesDTO = new HeadphonesDTO();
+
+        Optional<Headphones> headphonesOpt = headphonesRepository.findBySerial(serial);
+
+        if(headphonesOpt.isPresent()){
+
+            Headphones headphones = headphonesOpt.get();
+
+            headphonesDTO.setId(headphones.getId());
+            headphonesDTO.setSerial(headphones.getSerial());
+            headphonesDTO.setIsAssociated(headphones.getIsAssociated());
+        }
+
+        return headphonesDTO;
     }
 
 

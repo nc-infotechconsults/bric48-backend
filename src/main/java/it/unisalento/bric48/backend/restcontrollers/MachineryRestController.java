@@ -104,6 +104,8 @@ public class MachineryRestController {
 
                 machineries.add(machineryDTO);
             }
+            
+            c++;
         }
 
         return machineries;
