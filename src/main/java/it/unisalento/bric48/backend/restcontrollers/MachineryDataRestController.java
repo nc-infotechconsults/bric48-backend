@@ -1,8 +1,14 @@
 package it.unisalento.bric48.backend.restcontrollers;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -132,34 +138,167 @@ public class MachineryDataRestController {
     }
 
 
-    //Get data from-to
+    //Get data from-to filtered
     @RequestMapping(value="/getDataFromTo", method= RequestMethod.GET)
-    public List<MachineryDataDTO> getFromTo(@RequestParam("from") String from, @RequestParam("to") String to) {
+    public List<MachineryDataDTO> getFromTo(@RequestParam("from") String from, 
+                                            @RequestParam("to") String to, 
+                                            @RequestParam(value= "mserial", required = false) String mserial,
+                                            @RequestParam(value= "type", required = false) String type,
+                                            @RequestParam(value= "startDate", required = false) String startDate,
+                                            @RequestParam(value= "endDate", required = false) String endDate) {
 
-        int c = 1;
+        
         int i = Integer.parseInt(from);
         int j = Integer.parseInt(to);
 
         List<MachineryDataDTO> dataArray = new ArrayList<>();
 
-        for(MachineryData data : machineryDataRepository.findAll()) {
+        List<MachineryData> allData = machineryDataRepository.findAll();
 
-            if(c >= i && c <= j){
+        Collections.reverse(allData);
 
-                MachineryDataDTO dataDTO = new MachineryDataDTO();
+        for(MachineryData data : allData) {
 
-                dataDTO.setId(data.getId());
-                dataDTO.setMserial(data.getMserial());
-                dataDTO.setType(data.getType());
-                dataDTO.setDescription(data.getDescription());
-                dataDTO.setIsSolved(data.getIsSolved());
-                dataDTO.setValue(data.getValue());
-                dataDTO.setTimestamp(data.getTimestamp());
+            MachineryDataDTO dataDTO = new MachineryDataDTO();
 
-                dataArray.add(dataDTO);
+            dataDTO.setId(data.getId());
+            dataDTO.setMserial(data.getMserial());
+            dataDTO.setType(data.getType());
+            dataDTO.setDescription(data.getDescription());
+            dataDTO.setIsSolved(data.getIsSolved());
+            dataDTO.setValue(data.getValue());
+            dataDTO.setTimestamp(data.getTimestamp());
+
+            dataArray.add(dataDTO);
+
+            if(mserial != ""){
+                dataArray = dataArray.stream()
+                .filter(obj -> obj.getMserial().toLowerCase().contains(mserial.toLowerCase()))
+                .collect(Collectors.toList());
             }
 
-            c++;
+            if(type != ""){
+                dataArray = dataArray.stream()
+                .filter(obj -> obj.getType().toLowerCase().contains(type.toLowerCase()))
+                .collect(Collectors.toList());
+            }
+
+
+            if(startDate != ""){
+                // Conversione delle stringhe in LocalDate e LocalDateTime
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+                LocalDate startDateFormat = LocalDate.parse(startDate, dateFormatter);
+                LocalDateTime startTime = startDateFormat.atStartOfDay();
+
+                dataArray = dataArray.stream()
+                        .filter(obj -> {
+                                    LocalDateTime objTimestamp = LocalDateTime.parse(obj.getTimestamp(), dateTimeFormatter);
+                                    return !objTimestamp.isBefore(startTime);
+                                })
+                        .collect(Collectors.toList());
+            }
+
+            if(endDate != ""){
+                // Conversione delle stringhe in LocalDate e LocalDateTime
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+                LocalDate endDateFormat = LocalDate.parse(endDate, dateFormatter);
+                LocalDateTime endTime = endDateFormat.atTime(LocalTime.MAX);
+
+                dataArray = dataArray.stream()
+                        .filter(obj -> {
+                                    LocalDateTime objTimestamp = LocalDateTime.parse(obj.getTimestamp(), dateTimeFormatter);
+                                    return !objTimestamp.isAfter(endTime);
+                                })
+                        .collect(Collectors.toList());
+            }
+
+        }
+
+        if(dataArray.size() < j){
+            j = dataArray.size();
+        }
+
+        return dataArray.subList(i-1, j);
+    }
+
+
+    //Get data filtered
+    @RequestMapping(value="/getDataFiltered", method= RequestMethod.GET)
+    public List<MachineryDataDTO> getDataFilteres(@RequestParam(value= "mserial", required = false) String mserial,
+                                            @RequestParam(value= "type", required = false) String type,
+                                            @RequestParam(value= "startDate", required = false) String startDate,
+                                            @RequestParam(value= "endDate", required = false) String endDate) {
+
+
+        List<MachineryDataDTO> dataArray = new ArrayList<>();
+
+        List<MachineryData> allData = machineryDataRepository.findAll();
+
+        Collections.reverse(allData);
+
+        for(MachineryData data : allData) {
+
+            MachineryDataDTO dataDTO = new MachineryDataDTO();
+
+            dataDTO.setId(data.getId());
+            dataDTO.setMserial(data.getMserial());
+            dataDTO.setType(data.getType());
+            dataDTO.setDescription(data.getDescription());
+            dataDTO.setIsSolved(data.getIsSolved());
+            dataDTO.setValue(data.getValue());
+            dataDTO.setTimestamp(data.getTimestamp());
+
+            dataArray.add(dataDTO);
+
+            if(mserial != ""){
+                dataArray = dataArray.stream()
+                .filter(obj -> obj.getMserial().toLowerCase().contains(mserial.toLowerCase()))
+                .collect(Collectors.toList());
+            }
+
+            if(type != ""){
+                dataArray = dataArray.stream()
+                .filter(obj -> obj.getType().toLowerCase().contains(type.toLowerCase()))
+                .collect(Collectors.toList());
+            }
+
+
+            if(startDate != ""){
+                // Conversione delle stringhe in LocalDate e LocalDateTime
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+                LocalDate startDateFormat = LocalDate.parse(startDate, dateFormatter);
+                LocalDateTime startTime = startDateFormat.atStartOfDay();
+
+                dataArray = dataArray.stream()
+                        .filter(obj -> {
+                                    LocalDateTime objTimestamp = LocalDateTime.parse(obj.getTimestamp(), dateTimeFormatter);
+                                    return !objTimestamp.isBefore(startTime);
+                                })
+                        .collect(Collectors.toList());
+            }
+
+            if(endDate != ""){
+                // Conversione delle stringhe in LocalDate e LocalDateTime
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+                LocalDate endDateFormat = LocalDate.parse(endDate, dateFormatter);
+                LocalDateTime endTime = endDateFormat.atTime(LocalTime.MAX);
+
+                dataArray = dataArray.stream()
+                        .filter(obj -> {
+                                    LocalDateTime objTimestamp = LocalDateTime.parse(obj.getTimestamp(), dateTimeFormatter);
+                                    return !objTimestamp.isAfter(endTime);
+                                })
+                        .collect(Collectors.toList());
+            }
+
         }
 
         return dataArray;
