@@ -254,51 +254,51 @@ public class MachineryDataRestController {
 
             dataArray.add(dataDTO);
 
-            if(mserial != ""){
-                dataArray = dataArray.stream()
-                .filter(obj -> obj.getMserial().toLowerCase().contains(mserial.toLowerCase()))
-                .collect(Collectors.toList());
-            }
+        }
 
-            if(type != ""){
-                dataArray = dataArray.stream()
-                .filter(obj -> obj.getType().toLowerCase().contains(type.toLowerCase()))
-                .collect(Collectors.toList());
-            }
+        if(mserial != ""){
+            dataArray = dataArray.stream()
+            .filter(obj -> obj.getMserial().toLowerCase().contains(mserial.toLowerCase()))
+            .collect(Collectors.toList());
+        }
+
+        if(type != ""){
+            dataArray = dataArray.stream()
+            .filter(obj -> obj.getType().toLowerCase().contains(type.toLowerCase()))
+            .collect(Collectors.toList());
+        }
 
 
-            if(startDate != ""){
-                // Conversione delle stringhe in LocalDate e LocalDateTime
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
-                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        if(startDate != ""){
+            // Conversione delle stringhe in LocalDate e LocalDateTime
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-                LocalDate startDateFormat = LocalDate.parse(startDate, dateFormatter);
-                LocalDateTime startTime = startDateFormat.atStartOfDay();
+            LocalDate startDateFormat = LocalDate.parse(startDate, dateFormatter);
+            LocalDateTime startTime = startDateFormat.atStartOfDay();
 
-                dataArray = dataArray.stream()
-                        .filter(obj -> {
-                                    LocalDateTime objTimestamp = LocalDateTime.parse(obj.getTimestamp(), dateTimeFormatter);
-                                    return !objTimestamp.isBefore(startTime);
-                                })
-                        .collect(Collectors.toList());
-            }
+            dataArray = dataArray.stream()
+                    .filter(obj -> {
+                                LocalDateTime objTimestamp = LocalDateTime.parse(obj.getTimestamp(), dateTimeFormatter);
+                                return !objTimestamp.isBefore(startTime);
+                            })
+                    .collect(Collectors.toList());
+        }
 
-            if(endDate != ""){
-                // Conversione delle stringhe in LocalDate e LocalDateTime
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
-                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        if(endDate != ""){
+            // Conversione delle stringhe in LocalDate e LocalDateTime
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-                LocalDate endDateFormat = LocalDate.parse(endDate, dateFormatter);
-                LocalDateTime endTime = endDateFormat.atTime(LocalTime.MAX);
+            LocalDate endDateFormat = LocalDate.parse(endDate, dateFormatter);
+            LocalDateTime endTime = endDateFormat.atTime(LocalTime.MAX);
 
-                dataArray = dataArray.stream()
-                        .filter(obj -> {
-                                    LocalDateTime objTimestamp = LocalDateTime.parse(obj.getTimestamp(), dateTimeFormatter);
-                                    return !objTimestamp.isAfter(endTime);
-                                })
-                        .collect(Collectors.toList());
-            }
-
+            dataArray = dataArray.stream()
+                    .filter(obj -> {
+                                LocalDateTime objTimestamp = LocalDateTime.parse(obj.getTimestamp(), dateTimeFormatter);
+                                return !objTimestamp.isAfter(endTime);
+                            })
+                    .collect(Collectors.toList());
         }
 
         return dataArray;
