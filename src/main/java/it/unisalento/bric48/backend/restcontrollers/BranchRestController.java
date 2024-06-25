@@ -60,7 +60,7 @@ public class BranchRestController {
     }
 
     // Get all branches
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/getAll", method= RequestMethod.GET)
     public List<BranchDTO> getAllBranches() {
 

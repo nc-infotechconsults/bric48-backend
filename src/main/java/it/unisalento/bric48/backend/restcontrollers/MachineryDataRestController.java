@@ -57,7 +57,7 @@ public class MachineryDataRestController {
 
 
     //Get machineryData by type
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/find/{type}", method= RequestMethod.GET)
     public List<MachineryDataDTO> getMachineryDataByType(@PathVariable("type") String type) {
 
@@ -84,7 +84,7 @@ public class MachineryDataRestController {
 
 
     //Get machineryData by type and mserial and isSolved
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value = "/find/machinery", method = RequestMethod.GET)
     public List<MachineryDataDTO> getMachineryDataByTypeAndMserialAndIsSolved(@RequestParam("type") String type, @RequestParam("mserial") String mserial, @RequestParam(value = "isSolved", required = false) String isSolved){
 
@@ -114,6 +114,7 @@ public class MachineryDataRestController {
 
 
     //Get all data
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/getAll", method= RequestMethod.GET)
     public List<MachineryDataDTO> getAll() {
 
@@ -139,6 +140,7 @@ public class MachineryDataRestController {
 
 
     //Get data from-to filtered
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/getDataFromTo", method= RequestMethod.GET)
     public List<MachineryDataDTO> getFromTo(@RequestParam("from") String from, 
                                             @RequestParam("to") String to, 
@@ -227,6 +229,7 @@ public class MachineryDataRestController {
 
 
     //Get data filtered
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/getDataFiltered", method= RequestMethod.GET)
     public List<MachineryDataDTO> getDataFilteres(@RequestParam(value= "mserial", required = false) String mserial,
                                             @RequestParam(value= "type", required = false) String type,
@@ -306,7 +309,7 @@ public class MachineryDataRestController {
 
 
     // Update isSolved
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/updateIsSolved", method = RequestMethod.PUT)
     public ResponseEntity<String> updateIsSolved(@RequestParam("id") String id) {
 

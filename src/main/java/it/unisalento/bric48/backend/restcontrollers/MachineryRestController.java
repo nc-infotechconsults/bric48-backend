@@ -2,8 +2,11 @@ package it.unisalento.bric48.backend.restcontrollers;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.unisalento.bric48.backend.domain.Beacon;
 import it.unisalento.bric48.backend.domain.Machinery;
+import it.unisalento.bric48.backend.domain.MachineryData;
 import it.unisalento.bric48.backend.dto.MachineryDTO;
 import it.unisalento.bric48.backend.repositories.BeaconRepository;
+import it.unisalento.bric48.backend.repositories.MachineryDataRepository;
 import it.unisalento.bric48.backend.repositories.MachineryRepository;
 import it.unisalento.bric48.backend.repositories.NearbyHeadphonesRepository;
 
@@ -32,6 +37,9 @@ public class MachineryRestController {
 
     @Autowired
     MachineryRepository machineryRepository;
+
+    @Autowired
+    MachineryDataRepository machineryDataRepository;
 
     @Autowired
     BeaconRepository beaconRepository;
@@ -82,6 +90,7 @@ public class MachineryRestController {
     }
 
     //Get machineries from-to filter
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/getMachineriesFromTo", method= RequestMethod.GET)
     public List<MachineryDTO> getMachineriesFromTo(@RequestParam("from") String from, 
                                                     @RequestParam("to") String to, 
@@ -147,6 +156,7 @@ public class MachineryRestController {
 
 
     //Get machineries filtered
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/getMachineriesFiltered", method= RequestMethod.GET)
     public List<MachineryDTO> getMachineriesFiltered(@RequestParam(value= "mserial", required = false) String mserial,
                                                     @RequestParam(value= "name", required = false) String name,
@@ -204,7 +214,7 @@ public class MachineryRestController {
 
 
     //Get machineries by room od branch
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/find", method= RequestMethod.GET)
     public List<MachineryDTO> getMachineryByIdRoomOrIdBranch(@RequestParam(value = "idBranch", required = false) String idBranch, @RequestParam(value = "idRoom", required = false) String idRoom) {
 
@@ -243,6 +253,7 @@ public class MachineryRestController {
 
 
     //Get machinery by mserial
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/find/machinery/{mserial}", method= RequestMethod.GET)
     public MachineryDTO getMachineryByMserial(@PathVariable("mserial") String mserial) {
 
@@ -333,6 +344,48 @@ public class MachineryRestController {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+
+    //Get machineries by alarm is solved
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
+    @RequestMapping(value="/find/machinery/alarm", method= RequestMethod.GET)
+    public List<MachineryDTO> getMachineriesByAlarmIsSolved(@RequestParam("solved") String solved) {
+
+        List<MachineryData> alarms = machineryDataRepository.findByIsSolved(solved);
+
+        Set<String> seenMserials = new HashSet<>();
+        Iterator<MachineryData> iterator = alarms.iterator();
+
+        // Elimino dall'array alarms gli allarmi con mserial duplicati
+        while (iterator.hasNext()) {
+            MachineryData data = iterator.next();
+            if (seenMserials.contains(data.getMserial())) {
+                iterator.remove();
+            } else {
+                seenMserials.add(data.getMserial());
+            }
+        }
+
+        List<MachineryDTO> machineriesDTO = new ArrayList<>();
+
+        for (MachineryData alarm : alarms) {
+
+            Machinery machinery = machineryRepository.findByMserial(alarm.getMserial());
+
+            MachineryDTO machineryDTO = new MachineryDTO();
+            machineryDTO.setId(machinery.getId());
+            machineryDTO.setMserial(machinery.getMserial());
+            machineryDTO.setName(machinery.getName());
+            machineryDTO.setTopic(machinery.getTopic());
+            machineryDTO.setIdRoom(machinery.getIdRoom());
+            machineryDTO.setIdBranch(machinery.getIdBranch());
+
+            machineriesDTO.add(machineryDTO);
+            
+        }
+
+        return machineriesDTO;
     }
 
 

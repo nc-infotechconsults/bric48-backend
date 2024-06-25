@@ -46,7 +46,7 @@ public class NearbyHeadphonesRestController {
     }
 
     // Get all document
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/getAll", method= RequestMethod.GET)
     public List<NearbyHeadphonesDTO> getAllNearbyHeadphones() {
 
@@ -69,7 +69,7 @@ public class NearbyHeadphonesRestController {
     }
 
     // Get NearbyHeadphones by mserial
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/find/{mserial}", method= RequestMethod.GET)
     public List<NearbyHeadphonesDTO> getNearbyHeadphonesByMserial(@PathVariable("mserial") String mserial) {
 
@@ -91,7 +91,7 @@ public class NearbyHeadphonesRestController {
 
     
     // Get NearbyHeadphones by idRoom
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/find/room/{idRoom}", method= RequestMethod.GET)
     public List<NearbyHeadphonesDTO> getNearbyHeadphonesByIdRoom(@PathVariable("idRoom") String idRoom) {
 
@@ -112,7 +112,7 @@ public class NearbyHeadphonesRestController {
     }
 
     // Get NearbyHeadphones by idBranch
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/find/branch/{idBranch}", method= RequestMethod.GET)
     public List<NearbyHeadphonesDTO> getNearbyHeadphonesByIdBranch(@PathVariable("idBranch") String idBranch) {
 

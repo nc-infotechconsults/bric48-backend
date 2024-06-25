@@ -7,6 +7,7 @@ public class WorkerDTO {
     String name;
     String surname;
     String email;
+    String password;
     String phoneNumber;
     String role;
     String idHeadphones;
@@ -58,6 +59,12 @@ public class WorkerDTO {
     }
     public void setRole(String role) {
         this.role = role;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
     
 }

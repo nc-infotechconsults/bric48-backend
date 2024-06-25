@@ -49,7 +49,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable())
-                .authorizeRequests(requests -> requests.requestMatchers("/admin/authenticate", "/admin/add", "/machinery/getAll","/nearbyHeadphones/find/{}",
+                .authorizeRequests(requests -> requests.requestMatchers("/admin/authenticate","/worker/authenticate", "/worker/findByEmail", "/admin/add", "/machinery/getAll","/nearbyHeadphones/find/{}",
                                                                          "/nearbyHeadphones/add", "/nearbyHeadphones/getAll", "/machinery/getAll",
                                                                         "/beacon/find/{}", "/nearbyHeadphones/delete", "/machinery/find/machinery/{}", "/data/add",
                                                                         "nearbyHeadphones/delete/{}").permitAll().

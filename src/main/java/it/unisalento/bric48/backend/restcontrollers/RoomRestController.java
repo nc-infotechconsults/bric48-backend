@@ -54,7 +54,7 @@ public class RoomRestController {
     }
 
     //Get rooms by branch
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/find/{idBranch}", method= RequestMethod.GET)
     public List<RoomDTO> getRoomsByIdBranch(@PathVariable("idBranch") String idBranch) {
 

@@ -43,12 +43,6 @@ public class AdminRestController {
     @Autowired
     private JwtUtilities jwtUtilities;
 
-    // Test API
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/hello", method = RequestMethod.GET)
-    public String hello() {
-        return "hello";
-    }
 
     // Get JWT Token
     @RequestMapping(value="/authenticate", method = RequestMethod.POST)
