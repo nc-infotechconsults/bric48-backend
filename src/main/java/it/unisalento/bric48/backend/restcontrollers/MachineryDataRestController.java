@@ -231,7 +231,7 @@ public class MachineryDataRestController {
     //Get data filtered
     @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/getDataFiltered", method= RequestMethod.GET)
-    public List<MachineryDataDTO> getDataFilteres(@RequestParam(value= "mserial", required = false) String mserial,
+    public List<MachineryDataDTO> getDataFiltered(@RequestParam(value= "mserial", required = false) String mserial,
                                             @RequestParam(value= "type", required = false) String type,
                                             @RequestParam(value= "startDate", required = false) String startDate,
                                             @RequestParam(value= "endDate", required = false) String endDate) {

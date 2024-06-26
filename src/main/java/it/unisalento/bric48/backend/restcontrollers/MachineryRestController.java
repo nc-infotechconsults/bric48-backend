@@ -253,7 +253,6 @@ public class MachineryRestController {
 
 
     //Get machinery by mserial
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SECURITY_MANAGER')")
     @RequestMapping(value="/find/machinery/{mserial}", method= RequestMethod.GET)
     public MachineryDTO getMachineryByMserial(@PathVariable("mserial") String mserial) {
 
