@@ -6,6 +6,8 @@ public class BeaconDTO {
     String id;
     String mac;
     String mserial;
+    String threshold;
+
 
     public String getId() {
         return id;
@@ -24,6 +26,12 @@ public class BeaconDTO {
     }
     public void setMserial(String mserial) {
         this.mserial = mserial;
+    }
+    public String getThreshold() {
+        return threshold;
+    }
+    public void setThreshold(String threshold) {
+        this.threshold = threshold;
     }
     
     

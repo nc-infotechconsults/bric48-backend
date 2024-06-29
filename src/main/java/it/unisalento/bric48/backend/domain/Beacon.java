@@ -10,7 +10,14 @@ public class Beacon {
     String id;
     String mac;
     String mserial;
+    String threshold;
 
+    public String getThreshold() {
+        return threshold;
+    }
+    public void setThreshold(String threshold) {
+        this.threshold = threshold;
+    }
     public String getId() {
         return id;
     }

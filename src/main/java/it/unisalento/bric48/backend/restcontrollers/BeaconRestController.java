@@ -37,6 +37,7 @@ public class BeaconRestController {
         Beacon newBeacon = new Beacon();
         newBeacon.setMac(beaconDTO.getMac());
         newBeacon.setMserial(beaconDTO.getMserial());
+        newBeacon.setThreshold(beaconDTO.getThreshold());
 
         newBeacon = beaconRepository.save(newBeacon);
 
@@ -59,6 +60,7 @@ public class BeaconRestController {
             beaconDTO.setId(beacon.getId());
             beaconDTO.setMac(beacon.getMac());
             beaconDTO.setMserial(beacon.getMserial());
+            beaconDTO.setThreshold(beacon.getThreshold());
 
             beacons.add(beaconDTO);
         }
@@ -86,6 +88,7 @@ public class BeaconRestController {
                 beaconDTO.setId(beacon.getId());
                 beaconDTO.setMac(beacon.getMac());
                 beaconDTO.setMserial(beacon.getMserial());
+                beaconDTO.setThreshold(beacon.getThreshold());
 
                 beacons.add(beaconDTO);
             }
@@ -107,6 +110,7 @@ public class BeaconRestController {
             beaconDTO.setId(beacon.getId());
             beaconDTO.setMac(beacon.getMac());
             beaconDTO.setMserial(beacon.getMserial());
+            beaconDTO.setThreshold(beacon.getThreshold());
 
             beacons.add(beaconDTO);
         }
@@ -127,6 +131,7 @@ public class BeaconRestController {
             beaconDTO.setId(beacon.getId());
             beaconDTO.setMac(beacon.getMac());
             beaconDTO.setMserial(beacon.getMserial());
+            beaconDTO.setThreshold(beacon.getThreshold());
 
             return beaconDTO;
         }else{
