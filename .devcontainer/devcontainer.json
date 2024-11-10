@@ -1,0 +1,21 @@
+{
+  "name": "BRIC48 - Backend",
+  "image": "gradle:8.10-jdk23-jammy",
+  "runArgs": ["--name", "bric48-backend-devcontainer"],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "pivotal.vscode-boot-dev-pack",
+        "mhutchie.git-graph",
+        "rhalaly.scope-to-this",
+        "donjayamanne.githistory",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": "latest",
+    "ghcr.io/devcontainers/features/docker-in-docker": "latest"
+  }
+}

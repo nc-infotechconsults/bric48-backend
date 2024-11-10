@@ -1,14 +1,24 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.2.2'
-	id 'io.spring.dependency-management' version '1.1.4'
+  	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.hibernate.orm' version '6.5.3.Final'
+	id 'org.graalvm.buildtools.native' version '0.10.3'
 }
 
-group = 'it.unisalento.bric48'
-version = '0.0.1-SNAPSHOT'
+group = 'it.infotechconsults.bric48'
+version = '1.0.0'
 
 java {
-	sourceCompatibility = '17'
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(23)
+	}
+}
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
 }
 
 repositories {
@@ -16,24 +26,36 @@ repositories {
 }
 
 dependencies {
+	// PostgreSQL Driver
+	implementation 'org.postgresql:postgresql:42.7.4'
+
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.liquibase:liquibase-core'
+
+	compileOnly 'org.projectlombok:lombok'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-	// MongoDB
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-
-	// Spring Boot Starter
-    implementation 'org.springframework.boot:spring-boot-starter'
-
-    // Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-
+	testImplementation 'org.springframework.security:spring-security-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // JWT Library
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5', 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6', 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 }
 
+hibernate {
+  enhancement {
+    enableAssociationManagement = true
+  }
+}
 
 tasks.named('test') {
 	useJUnitPlatform()

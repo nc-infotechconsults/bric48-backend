@@ -1,0 +1,14 @@
+volumes:
+  dbdata:
+
+services:
+  postgresql:
+    image: postgres:16-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=dbuser
+      - POSTGRES_DB=bric48db
