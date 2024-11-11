@@ -1,6 +1,6 @@
 {
   "name": "BRIC48 - Backend",
-  "image": "gradle:8.10-jdk23-jammy",
+  "image": "gradle:8.10-jdk21-jammy",
   "runArgs": ["--name", "bric48-backend-devcontainer"],
   "customizations": {
     "vscode": {
