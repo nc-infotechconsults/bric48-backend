@@ -1,10 +1,12 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
 plugins {
 	id 'java'
   	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'org.liquibase.gradle' version '2.2.2'
 	id 'org.hibernate.orm' version '6.5.3.Final'
-	id 'org.graalvm.buildtools.native' version '0.10.3'
 }
 
 group = 'it.infotechconsults.bric48'
@@ -50,6 +52,35 @@ dependencies {
     // JWT Library
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6', 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+	liquibaseRuntime 'info.picocli:picocli:4.7.6'
+	liquibaseRuntime 'org.liquibase:liquibase-core'
+    liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate6:4.30.0'
+    liquibaseRuntime 'org.postgresql:postgresql'
+    liquibaseRuntime 'org.springframework.boot:spring-boot'
+    liquibaseRuntime 'org.springframework:spring-orm'
+    liquibaseRuntime 'javax.xml.bind:jaxb-api'
+    liquibaseRuntime 'org.hibernate:hibernate-core:6.6.2.Final'
+    liquibaseRuntime sourceSets.main.output
+}
+
+diff.dependsOn compileJava
+diffChangelog.dependsOn compileJava
+generateChangelog.dependsOn compileJava
+
+liquibase {
+    activities {
+        main {
+			driver 'org.postgresql.Driver'
+            url 'jdbc:postgresql://localhost:5432/bric48db'
+            username 'dbuser'
+            password 'password'
+            changelogFile 'src/main/resources/db/changelog/generated-changelog.xml'
+            referenceUrl 'hibernate:spring:it.infotechconsults.bric48.backend.domain' +
+                    '?dialect=' +
+                    'org.hibernate.dialect.PostgreSQLDialect'
+        }
+    }
 }
 
 hibernate {

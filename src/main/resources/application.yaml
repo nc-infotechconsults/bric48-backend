@@ -1,11 +1,6 @@
 spring:
   liquibase:
-    enabled: false
     change-log: classpath:db/master.xml
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/bric48db
-    username: dbuser
-    password: password
     
   datasource:
     url: jdbc:postgresql://localhost:5432/bric48db
