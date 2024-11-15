@@ -98,6 +98,15 @@ task composeUpDb {
 	}
 }
 
+task composeDown {
+	doLast {
+		exec {
+			executable "docker"
+			args "compose", "-f", "src/main/docker/postgresql.yml", "down"
+		}
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

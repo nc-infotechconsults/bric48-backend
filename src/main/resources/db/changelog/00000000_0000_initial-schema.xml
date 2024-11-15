@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="root (generated)" id="1731621879787-1">
+    <changeSet author="root (generated)" id="1731706313061-1">
         <createTable tableName="area">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="areaPK"/>
@@ -16,7 +16,7 @@
             <column name="structure_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-2">
+    <changeSet author="root (generated)" id="1731706313061-2">
         <createTable tableName="beacon">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="beaconPK"/>
@@ -33,7 +33,7 @@
             <column name="machinery_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-3">
+    <changeSet author="root (generated)" id="1731706313061-3">
         <createTable tableName="functionality">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="functionalityPK"/>
@@ -43,7 +43,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-4">
+    <changeSet author="root (generated)" id="1731706313061-4">
         <createTable tableName="headphone">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="headphonePK"/>
@@ -59,7 +59,7 @@
             <column name="user_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-5">
+    <changeSet author="root (generated)" id="1731706313061-5">
         <createTable tableName="machinery">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="machineryPK"/>
@@ -76,7 +76,7 @@
             <column name="area_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-6">
+    <changeSet author="root (generated)" id="1731706313061-6">
         <createTable tableName="machinery_notification">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="machinery_notificationPK"/>
@@ -89,7 +89,17 @@
             <column name="machinery_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-7">
+    <changeSet author="root (generated)" id="1731706313061-7">
+        <createTable tableName="machinery_user">
+            <column name="machinery_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="machinery_userPK"/>
+            </column>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="machinery_userPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="root (generated)" id="1731706313061-8">
         <createTable tableName="message">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="messagePK"/>
@@ -101,7 +111,7 @@
             <column name="sender_user_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-8">
+    <changeSet author="root (generated)" id="1731706313061-9">
         <createTable tableName="role">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rolePK"/>
@@ -116,7 +126,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-9">
+    <changeSet author="root (generated)" id="1731706313061-10">
         <createTable tableName="role_functionality">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="role_functionalityPK"/>
@@ -126,7 +136,7 @@
             <column name="role_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-10">
+    <changeSet author="root (generated)" id="1731706313061-11">
         <createTable tableName="structure">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="structurePK"/>
@@ -141,7 +151,7 @@
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-11">
+    <changeSet author="root (generated)" id="1731706313061-12">
         <createTable tableName="user">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="userPK"/>
@@ -162,49 +172,55 @@
             <column name="role_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-12">
+    <changeSet author="root (generated)" id="1731706313061-13">
         <addUniqueConstraint columnNames="user_id" constraintName="UC_HEADPHONEUSER_ID_COL" tableName="headphone"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-13">
+    <changeSet author="root (generated)" id="1731706313061-14">
         <addUniqueConstraint columnNames="notification_id" constraintName="UC_MESSAGENOTIFICATION_ID_COL" tableName="message"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-14">
+    <changeSet author="root (generated)" id="1731706313061-15">
         <addUniqueConstraint columnNames="headphone_id" constraintName="UC_USERHEADPHONE_ID_COL" tableName="user"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-15">
+    <changeSet author="root (generated)" id="1731706313061-16">
         <addForeignKeyConstraint baseColumnNames="structure_id" baseTableName="area" constraintName="FK5d8s5ohi5vj9sm4gtk2e2qb01" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="structure" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-16">
+    <changeSet author="root (generated)" id="1731706313061-17">
         <addForeignKeyConstraint baseColumnNames="notification_id" baseTableName="message" constraintName="FK7abinr3ojyocyvkf65nf6txgf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="machinery_notification" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-17">
+    <changeSet author="root (generated)" id="1731706313061-18">
+        <addForeignKeyConstraint baseColumnNames="machinery_id" baseTableName="machinery_user" constraintName="FK7njvbhinpk1kbn5hjph2m1w1c" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="machinery" validate="true"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1731706313061-19">
         <addForeignKeyConstraint baseColumnNames="sender_user_id" baseTableName="message" constraintName="FK80flimpheqbm2ex5r6ng1iodk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-18">
+    <changeSet author="root (generated)" id="1731706313061-20">
         <addForeignKeyConstraint baseColumnNames="machinery_id" baseTableName="beacon" constraintName="FK8t5me1w7sff9tiww6xa8qwwbg" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="machinery" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-19">
+    <changeSet author="root (generated)" id="1731706313061-21">
         <addForeignKeyConstraint baseColumnNames="machinery_id" baseTableName="machinery_notification" constraintName="FKab6bolqcg18cri9b6k00fa9he" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="machinery" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-20">
+    <changeSet author="root (generated)" id="1731706313061-22">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="headphone" constraintName="FKfgktwn1or2pv4bsbvmdaqelig" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-21">
+    <changeSet author="root (generated)" id="1731706313061-23">
         <addForeignKeyConstraint baseColumnNames="receiver_user_id" baseTableName="message" constraintName="FKh4xy93vijopygnpjqbe0c9iew" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-22">
+    <changeSet author="root (generated)" id="1731706313061-24">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="role_functionality" constraintName="FKkfndpnoaq6tisgq2hjj16jm9j" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="role" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-23">
+    <changeSet author="root (generated)" id="1731706313061-25">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user" constraintName="FKn82ha3ccdebhokx3a8fgdqeyy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="role" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-24">
+    <changeSet author="root (generated)" id="1731706313061-26">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="machinery_user" constraintName="FKo6k4tjt1eexlv6ep4teq8xsmm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1731706313061-27">
         <addForeignKeyConstraint baseColumnNames="functionality_id" baseTableName="role_functionality" constraintName="FKqai2380dvlog367lpuym4ls71" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="functionality" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-25">
+    <changeSet author="root (generated)" id="1731706313061-28">
         <addForeignKeyConstraint baseColumnNames="area_id" baseTableName="machinery" constraintName="FKqfx6kyvfw0nputqr1lrj5liu8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="area" validate="true"/>
     </changeSet>
-    <changeSet author="root (generated)" id="1731621879787-26">
+    <changeSet author="root (generated)" id="1731706313061-29">
         <addForeignKeyConstraint baseColumnNames="headphone_id" baseTableName="user" constraintName="FKravxapl680c2okwh5fhlvppyb" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="headphone" validate="true"/>
     </changeSet>
 </databaseChangeLog>

@@ -1,9 +1,13 @@
 package it.infotechconsults.bric48.backend.domain;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -38,5 +42,8 @@ public class User extends Audit {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Headphone headphone;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Machinery> machineries;
 
 }
