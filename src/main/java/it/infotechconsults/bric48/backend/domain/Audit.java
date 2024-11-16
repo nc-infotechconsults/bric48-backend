@@ -4,6 +4,8 @@ import java.time.Instant;
 
 import org.hibernate.annotations.SQLRestriction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
@@ -31,9 +33,11 @@ public abstract class Audit extends BaseEntity {
     private Instant updatedAt;
 
     @Column(name = "deleted_by")
+    @JsonIgnore
     private String deletedBy;
 
     @Column(name = "deleted_at")
+    @JsonIgnore
     private Instant deletedAt;
 
 }
