@@ -1,2 +1,2 @@
 id;created_at;created_by;deleted_at;deleted_by;updated_at;updated_by;email;name;password;phone_number;reg_number;surname;headphone_id;role_id
-1;2024-11-16 00:00:00;system;;;;;admin@system.it;Administrator;$2a$12$BAogURi0JWpk0nSgQ/16COxrOJHrl1.oy0c6OoPdvcz67.72CE65S;;;System;NULL;ADMINISTRATOR
+1;2024-11-16 00:00:00;system;NULL;NULL;NULL;NULL;admin@system.it;Administrator;$2a$12$BAogURi0JWpk0nSgQ/16COxrOJHrl1.oy0c6OoPdvcz67.72CE65S;;;System;NULL;ADMINISTRATOR
