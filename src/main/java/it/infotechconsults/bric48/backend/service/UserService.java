@@ -1,23 +1,17 @@
 package it.infotechconsults.bric48.backend.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.infotechconsults.bric48.backend.domain.User;
+import it.infotechconsults.bric48.backend.mapper.UserMapper;
 import it.infotechconsults.bric48.backend.repository.UserRepository;
+import it.infotechconsults.bric48.backend.rest.dto.UserDTO;
 
 @Service
-public class UserService {
+public class UserService extends AuditService<UserDTO, User, User, String> {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findBy(
-                (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("email"), email),
-                arg0 -> arg0.first());
+    public UserService(UserRepository repository, UserMapper mapper){
+        super(repository, mapper);
     }
-
+    
 }

@@ -17,7 +17,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 
     private final String JWT_SECRET = "cfd4caca5b741112d09f23979a96f9d9ee6832672019d4ec";
-    private final Integer EXPIRATION = 60 * 60 * 1000;
+    public final Integer EXPIRATION = 60 * 60 * 1000;
     private final JwtParser parser;
 
     public JwtService() {

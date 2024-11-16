@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.infotechconsults.bric48.backend.rest.request.AuthRequest;
+import it.infotechconsults.bric48.backend.rest.dto.CredentialsDTO;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -26,7 +26,7 @@ public class AuthControllerTest {
 
     @Test
     void testAuthenticateAndGetToken() throws Exception {
-        AuthRequest request = new AuthRequest();
+        CredentialsDTO request = new CredentialsDTO();
         request.setUsername("admin@system.it");
         request.setPassword("password");
 

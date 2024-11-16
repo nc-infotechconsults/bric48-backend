@@ -5,15 +5,18 @@ import java.time.Instant;
 import org.hibernate.annotations.SQLRestriction;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@MappedSuperclass
-@SQLRestriction(value = "deletedBy is null and deletedAt is null")
-public class Audit extends BaseEntity {
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@SQLRestriction(value = "deleted_by is null and deleted_at is null")
+public abstract class Audit extends BaseEntity {
     
     @Column(name = "created_by")
     private String createdBy;
