@@ -1,7 +1,7 @@
 package it.infotechconsults.bric48.backend.domain;
 
-import org.hibernate.annotations.UuidGenerator;
-
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -12,6 +12,6 @@ import lombok.Setter;
 @Setter
 public class BaseEntity {
     @Id
-    @UuidGenerator
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 }

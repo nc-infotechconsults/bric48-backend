@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.infotechconsults.bric48.backend.rest.dto.AuthDTO;
+import it.infotechconsults.bric48.backend.rest.request.AuthRequest;
+import it.infotechconsults.bric48.backend.rest.response.AuthResponse;
 import it.infotechconsults.bric48.backend.security.JwtService;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
 
     @Autowired
@@ -24,11 +27,12 @@ public class AuthController {
     private JwtService jwtService;
 
     @PostMapping("/token")
-    public String authenticateAndGetToken(@RequestBody AuthDTO authRequest) {
+    public AuthResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) throws Exception{
+        log.debug("auth::token - {}", authRequest.toString());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
+            return AuthResponse.builder().token(jwtService.generateToken(authRequest.getUsername())).build();
         } else {
             throw new UsernameNotFoundException("Invalid user request!");
         }
