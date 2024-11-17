@@ -15,9 +15,17 @@ import jakarta.persistence.EntityExistsException;
 public class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ EntityExistsException.class })
-    public ResponseEntity<Object> handleAccessDeniedException(EntityExistsException ex, WebRequest request) {
+    public ResponseEntity<Object> handleEntityExistsException(EntityExistsException ex, WebRequest request) {
         return new ResponseEntity<Object>(ErrorDetail.builder()
                 .message(ex.getMessage())
                 .build(), new HttpHeaders(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler({ Exception.class })
+    public ResponseEntity<Object> handleGeneralException(Exception ex, WebRequest request) {
+        return new ResponseEntity<Object>(ErrorDetail.builder()
+                .message(ex.getMessage())
+                .type(ex.getClass().getName())
+                .build(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

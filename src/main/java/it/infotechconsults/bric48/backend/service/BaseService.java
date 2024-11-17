@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import it.infotechconsults.bric48.backend.mapper.BaseMapper;
 import it.infotechconsults.bric48.backend.repository.BaseRepository;
+import it.infotechconsults.bric48.backend.repository.EntityManagerRepository;
 import it.infotechconsults.bric48.backend.repository.specification.SpecificationBuilder;
 import it.infotechconsults.bric48.backend.rest.dto.FiltersDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,7 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class BaseService<R, RS, E, ID> {
 
+    protected Class<E> entityClass;
+
     protected final BaseRepository<E, ID> repository;
+    protected final EntityManagerRepository<E> eRepository;
     protected final BaseMapper<R, E, RS> mapper;
 
     // methods called for business logic
@@ -137,11 +141,15 @@ public abstract class BaseService<R, RS, E, ID> {
     }
 
     public Page<E> search(FiltersDTO filters, Pageable pageable) throws Exception {
-        SpecificationBuilder<E> specBuilder = new SpecificationBuilder<>();
-        Specification <E> spec = specBuilder.buildSpecification(filters);
-        if(spec != null)
-            return repository.findAll(spec, pageable);
-        else
-            return repository.findAll(pageable);
+        if(filters.getFields() != null && !filters.getFields().isEmpty()){
+            return eRepository.search(filters, pageable, entityClass);
+        }else{
+            SpecificationBuilder<E> specBuilder = new SpecificationBuilder<>();
+            Specification <E> spec = specBuilder.buildSpecification(filters);
+            if(spec != null)
+                return repository.findAll(spec, pageable);
+            else
+                return repository.findAll(pageable);
+        }
     }
 }

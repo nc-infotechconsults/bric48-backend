@@ -1,5 +1,7 @@
 package it.infotechconsults.bric48.backend.rest;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,6 +15,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.infotechconsults.bric48.backend.enums.LogicOperator;
+import it.infotechconsults.bric48.backend.rest.dto.FiltersDTO;
 import it.infotechconsults.bric48.backend.rest.dto.UserDTO;
 
 @SpringBootTest
@@ -74,8 +78,19 @@ public class UserControllerTest {
     }
 
     @Test
-    void testSearch() {
+    @WithMockUser(username = "admin@system.it", password = "password")
+    void testSearch() throws Exception {
 
+        FiltersDTO request = FiltersDTO.builder().
+            operator(LogicOperator.AND)
+            .fields(List.of("id", "name")).build();
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/users/search")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(request)))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andDo(MockMvcResultHandlers.print());
     }
 
     @Test

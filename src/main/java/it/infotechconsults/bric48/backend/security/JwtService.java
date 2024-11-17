@@ -21,7 +21,8 @@ public class JwtService {
     private final JwtParser parser;
 
     public JwtService() {
-        parser = Jwts.parser().decryptWith(Keys.hmacShaKeyFor(JWT_SECRET.getBytes())).build();
+        parser = Jwts.parser().verifyWith(Keys.hmacShaKeyFor(JWT_SECRET.getBytes()))
+                .build();
     }
 
     public String extractUsername(String token) {
@@ -38,7 +39,7 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return parser.parseUnsecuredClaims(token).getPayload();
+        return parser.parseSignedClaims(token).getPayload();
     }
 
     private Boolean isTokenExpired(String token) {

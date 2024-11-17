@@ -16,35 +16,41 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Selection;
 
 public class SpecificationBuilder<T> {
+    
+    public CriteriaQuery<Long> buildCountCriteriaQuery(FiltersDTO filters, CriteriaBuilder builder, Class<T> clazz) {
+        CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
+        Root<T> root = countQuery.from(clazz);
+        Predicate wherePredicate = generateWhereCondition(countQuery, builder, root, filters);
+        return countQuery.select(builder.count(root)).where(wherePredicate);
+    }
+
     public Specification<T> buildSpecification(FiltersDTO filters) {
         return (root, query, builder) -> {
-            List<Predicate> predicates = new ArrayList<>();
+            return generateWhereCondition(query, builder, root, filters);
+        };
+    }
 
-            // Apply simple filters
-            if(filters.getCriterias() != null && !filters.getCriterias().isEmpty())
-                for (FilterCriteriaDTO criteria : filters.getCriterias()) {
-                    predicates.add(createPredicate(criteria, root, builder, query));
-                }
+    public Predicate generateWhereCondition(CriteriaQuery<?> query, CriteriaBuilder builder, Root<T> root,
+            FiltersDTO filters) {
+        List<Predicate> predicates = new ArrayList<>();
 
-            // Apply grouped filters, including nested groups
-            if(filters.getGroups() != null && !filters.getGroups().isEmpty())
-                for (FilterGroupDTO group : filters.getGroups()) {
-                    Predicate predicate = buildGroupPredicate(group, root, builder, query);
-                    if(predicate != null)
-                        predicates.add(predicate);
-                }
-
-            // Set fields to load in select clause (projection)
-            if (filters.getFields() != null && !filters.getFields().isEmpty()) {
-                query.multiselect(
-                        filters.getFields().stream()
-                                .map(field -> getPath(root, field, query))
-                                .toArray(Selection[]::new));
+        // Apply simple filters
+        if (filters.getCriterias() != null && !filters.getCriterias().isEmpty())
+            for (FilterCriteriaDTO criteria : filters.getCriterias()) {
+                predicates.add(createPredicate(criteria, root, builder, query));
             }
 
+        // Apply grouped filters, including nested groups
+        if (filters.getGroups() != null && !filters.getGroups().isEmpty())
+            for (FilterGroupDTO group : filters.getGroups()) {
+                Predicate predicate = buildGroupPredicate(group, root, builder, query);
+                if (predicate != null)
+                    predicates.add(predicate);
+            }
+
+        if (filters.getOperator() != null)
             switch (filters.getOperator()) {
                 case AND -> {
                     return builder.and(predicates.toArray(new Predicate[0]));
@@ -56,7 +62,8 @@ public class SpecificationBuilder<T> {
                     return null;
                 }
             }
-        };
+        else
+            return builder.and(predicates.toArray(new Predicate[0]));
     }
 
     // Helper method to create individual predicates based on FilterCriteria
@@ -115,7 +122,7 @@ public class SpecificationBuilder<T> {
         // Recursively add nested groups
         for (FilterGroupDTO nestedGroup : group.getGroups()) {
             Predicate predicate = buildGroupPredicate(nestedGroup, root, builder, query);
-            if(predicate != null)
+            if (predicate != null)
                 groupPredicates.add(predicate);
         }
 

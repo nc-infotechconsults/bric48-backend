@@ -5,14 +5,15 @@ import java.time.Instant;
 import it.infotechconsults.bric48.backend.domain.Audit;
 import it.infotechconsults.bric48.backend.mapper.BaseMapper;
 import it.infotechconsults.bric48.backend.repository.BaseRepository;
+import it.infotechconsults.bric48.backend.repository.EntityManagerRepository;
 import it.infotechconsults.bric48.backend.util.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class AuditService<R, RS, E extends Audit, ID> extends BaseService<R, RS, E, ID> {
 
-    public AuditService(BaseRepository<E, ID> repository, BaseMapper<R, E, RS> mapper) {
-        super(repository, mapper);
+    public AuditService(BaseRepository<E, ID> repository, EntityManagerRepository<E> eRepository, BaseMapper<R, E, RS> mapper) {
+        super(repository, eRepository, mapper);
     }
 
     @Override

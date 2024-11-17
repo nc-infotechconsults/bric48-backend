@@ -32,26 +32,26 @@ public abstract class BaseController<R, RS, E, ID> {
 
     @PutMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public RS update(@PathVariable ID id, @Valid @RequestBody R dto) throws Exception {
+    public RS update(@PathVariable("id") ID id, @Valid @RequestBody R dto) throws Exception {
         return mapper.entityToResponse(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable ID id) throws Exception {
+    public void delete(@PathVariable("id") ID id) throws Exception {
         service.delete(id);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public RS getById(@PathVariable ID id) throws Exception {
+    public RS getById(@PathVariable("id") ID id) throws Exception {
         return mapper.entityToResponse(service.getById(id));
     }
 
     @PostMapping("/search")
     @ResponseStatus(code = HttpStatus.OK)
     public Page<RS> search(@RequestBody FiltersDTO filters,
-            @RequestParam(required = false, defaultValue = "false") Boolean unpaged, Pageable pageable)
+            @RequestParam(name = "unpaged", required = false, defaultValue = "false") Boolean unpaged, Pageable pageable)
             throws Exception {
         return mapper.pageEntityToPageRespoonse(service.search(filters, unpaged ? Pageable.unpaged(pageable.getSort()) : pageable));
     }
