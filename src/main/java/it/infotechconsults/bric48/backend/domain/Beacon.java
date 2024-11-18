@@ -17,7 +17,7 @@ public class Beacon extends Audit {
     private String name;
 
     @Column(name = "serial")
-    private String surname;
+    private String serial;
 
     @Column(name = "threshold")
     private Float threshold;
