@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.infotechconsults.bric48.backend.domain.User;
-import it.infotechconsults.bric48.backend.mapper.UserMapper;
 import it.infotechconsults.bric48.backend.rest.dto.AccessTokenDTO;
 import it.infotechconsults.bric48.backend.rest.dto.CredentialsDTO;
 import it.infotechconsults.bric48.backend.security.JwtService;
@@ -34,9 +33,6 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserMapper userMapper;
 
     @PostMapping("/token")
     public AccessTokenDTO generateToken(@RequestBody CredentialsDTO authRequest) throws Exception{
