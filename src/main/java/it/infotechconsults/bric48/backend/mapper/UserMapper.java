@@ -11,9 +11,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import it.infotechconsults.bric48.backend.domain.User;
 import it.infotechconsults.bric48.backend.rest.dto.UserDTO;
+import it.infotechconsults.bric48.backend.rest.dto.UserResponseDTO;
+import it.infotechconsults.bric48.backend.rest.dto.UserSessionDTO;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public abstract class UserMapper extends BaseMapper<UserDTO, User, User> {
+public abstract class UserMapper extends BaseMapper<UserDTO, User, UserResponseDTO> {
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
@@ -27,5 +29,7 @@ public abstract class UserMapper extends BaseMapper<UserDTO, User, User> {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "password", expression = "java(request.getPassword() != null ? passwordEncoder.encode(request.getPassword()) : entity.getPassword())")
     public abstract void updateEntity(@MappingTarget User entity, UserDTO request);
+
+    public abstract UserSessionDTO entityToSession(User entity);
 
 }

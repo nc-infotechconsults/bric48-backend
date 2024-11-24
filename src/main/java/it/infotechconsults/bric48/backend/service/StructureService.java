@@ -7,11 +7,12 @@ import it.infotechconsults.bric48.backend.mapper.StructureMapper;
 import it.infotechconsults.bric48.backend.repository.EntityManagerRepository;
 import it.infotechconsults.bric48.backend.repository.StructureRepository;
 import it.infotechconsults.bric48.backend.rest.dto.StructureDTO;
+import it.infotechconsults.bric48.backend.rest.dto.StructureResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class StructureService extends AuditService<StructureDTO, Structure, Structure, String> {
+public class StructureService extends AuditService<StructureDTO, StructureResponseDTO, Structure, String> {
 
     public StructureService(StructureRepository repository, EntityManagerRepository<Structure> eRepository, StructureMapper mapper) {
         super(repository, eRepository, mapper);

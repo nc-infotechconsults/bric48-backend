@@ -3,7 +3,6 @@ package it.infotechconsults.bric48.backend.domain;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,14 +40,12 @@ public class User extends Audit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
-    @JsonIgnoreProperties({"users", "createdBy", "createdAt", "updatedBy", "updatedAt"})
     private Role role;
 
     @OneToOne(fetch = FetchType.LAZY)
     private Headphone headphone;
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"users", "createdBy", "createdAt", "updatedBy", "updatedAt"})
     private Set<Machinery> machineries;
 
 }

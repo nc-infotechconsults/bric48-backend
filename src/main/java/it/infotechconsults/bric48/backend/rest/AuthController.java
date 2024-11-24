@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.infotechconsults.bric48.backend.domain.User;
 import it.infotechconsults.bric48.backend.rest.dto.AccessTokenDTO;
 import it.infotechconsults.bric48.backend.rest.dto.CredentialsDTO;
+import it.infotechconsults.bric48.backend.rest.dto.UserSessionDTO;
 import it.infotechconsults.bric48.backend.security.JwtService;
 import it.infotechconsults.bric48.backend.service.UserService;
 import it.infotechconsults.bric48.backend.util.SecurityUtil;
@@ -50,9 +50,9 @@ public class AuthController {
     }
 
     @GetMapping("/session")
-    public User getUserSession() throws Exception{
+    public UserSessionDTO getUserSession() throws Exception{
         log.debug("auth::session - {}", SecurityUtil.getCurrentUsername());
-        return userService.findByUsername(SecurityUtil.getCurrentUsername()).orElseThrow(EntityNotFoundException::new);
+        return userService.sessionByUsername(SecurityUtil.getCurrentUsername()).orElseThrow(EntityNotFoundException::new);
     }
 
 }

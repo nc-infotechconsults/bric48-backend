@@ -11,12 +11,14 @@ import it.infotechconsults.bric48.backend.mapper.UserMapper;
 import it.infotechconsults.bric48.backend.repository.EntityManagerRepository;
 import it.infotechconsults.bric48.backend.repository.UserRepository;
 import it.infotechconsults.bric48.backend.rest.dto.UserDTO;
+import it.infotechconsults.bric48.backend.rest.dto.UserResponseDTO;
+import it.infotechconsults.bric48.backend.rest.dto.UserSessionDTO;
 import jakarta.persistence.EntityExistsException;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class UserService extends AuditService<UserDTO, User, User, String> {
+public class UserService extends AuditService<UserDTO, UserResponseDTO, User, String> {
 
     public UserService(UserRepository repository, EntityManagerRepository<User> eRepository, UserMapper mapper) {
         super(repository, eRepository, mapper);
@@ -39,6 +41,11 @@ public class UserService extends AuditService<UserDTO, User, User, String> {
                         criteriaBuilder.equal(criteriaBuilder.lower(root.get("id")),
                                 id.toLowerCase())))))
             throw new EntityExistsException();
+    }
+
+    public Optional<UserSessionDTO> sessionByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = findByUsername(username);
+        return Optional.ofNullable(user.isPresent() ? ((UserMapper)mapper).entityToSession(user.get()) : null);
     }
 
     public Optional<User> findByUsername(String username) throws UsernameNotFoundException {
