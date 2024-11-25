@@ -2,6 +2,8 @@ package it.infotechconsults.bric48.backend.domain;
 
 import java.util.Set;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity(name = "machinery")
+@SQLRestriction(value = "deleted_by is null and deleted_at is null")
 public class Machinery extends Audit {
 
     @Column(name = "name")

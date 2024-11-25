@@ -1,12 +1,9 @@
-import java.text.SimpleDateFormat
-import java.util.Date
-
 plugins {
 	id 'java'
   	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'org.liquibase.gradle' version '2.2.2'
-	id 'org.hibernate.orm' version '6.5.3.Final'
+	id 'org.hibernate.orm' version '6.6.3.Final'
 }
 
 group = 'it.infotechconsults.bric48'

@@ -2,22 +2,16 @@ package it.infotechconsults.bric48.backend.domain;
 
 import java.time.Instant;
 
-import org.hibernate.annotations.SQLRestriction;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@SQLRestriction(value = "deleted_by is null and deleted_at is null")
+@MappedSuperclass
 public abstract class Audit extends BaseEntity {
     
     @Column(name = "created_by")

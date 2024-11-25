@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 import it.infotechconsults.bric48.backend.domain.Beacon;
 import it.infotechconsults.bric48.backend.mapper.BeaconMapper;
 import it.infotechconsults.bric48.backend.rest.dto.BeaconDTO;
+import it.infotechconsults.bric48.backend.rest.dto.BeaconResponseDTO;
 import it.infotechconsults.bric48.backend.service.BeaconService;
 
 @RestController
 @RequestMapping("/beacons")
-public class BeaconController extends BaseController<BeaconDTO, Beacon, Beacon, String>{
+public class BeaconController extends BaseController<BeaconDTO, BeaconResponseDTO, Beacon, String>{
     
     public BeaconController(BeaconService service, BeaconMapper mapper){
         super(service, mapper);

@@ -12,7 +12,7 @@ server:
 spring:
   devtools:
     restart:
-      enabled: true
+      enabled: false
 
   liquibase:
     change-log: classpath:db/master.xml

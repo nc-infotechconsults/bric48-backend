@@ -2,6 +2,8 @@ package it.infotechconsults.bric48.backend.domain;
 
 import java.util.Set;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -17,6 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity(name = "user")
+@SQLRestriction(value = "deleted_by is null and deleted_at is null")
 public class User extends Audit {
 
     @Column(name = "name")

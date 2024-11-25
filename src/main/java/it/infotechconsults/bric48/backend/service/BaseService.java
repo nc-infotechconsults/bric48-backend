@@ -141,15 +141,15 @@ public abstract class BaseService<R, RS, E, ID> {
     }
 
     public Page<E> search(FiltersDTO filters, Pageable pageable) throws Exception {
-        if(filters.getFields() != null && !filters.getFields().isEmpty()){
-            return eRepository.search(filters, pageable, entityClass);
-        }else{
+        // if(filters.getFields() != null && !filters.getFields().isEmpty()){
+        //     return eRepository.search(filters, pageable, entityClass);
+        // }else{
             SpecificationBuilder<E> specBuilder = new SpecificationBuilder<>();
             Specification <E> spec = specBuilder.buildSpecification(filters);
             if(spec != null)
                 return repository.findAll(spec, pageable);
             else
                 return repository.findAll(pageable);
-        }
+        // }
     }
 }

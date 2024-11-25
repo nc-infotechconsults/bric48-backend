@@ -10,8 +10,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import it.infotechconsults.bric48.backend.configuration.error.ErrorDetail;
 import jakarta.persistence.EntityExistsException;
+import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
+@Slf4j
 public class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ EntityExistsException.class })
@@ -23,6 +25,7 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
 
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<Object> handleGeneralException(Exception ex, WebRequest request) {
+        log.error("Exception returned: ", ex);
         return new ResponseEntity<Object>(ErrorDetail.builder()
                 .message(ex.getMessage())
                 .type(ex.getClass().getName())

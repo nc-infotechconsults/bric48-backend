@@ -13,13 +13,13 @@ import lombok.Setter;
 @Setter
 @Entity(name = "functionality")
 public class Functionality {
-   
+
     @Id
     private String id;
-    
+
     @Column(name = "name")
     private String name;
-    
+
     @Column(name = "description")
     private String description;
 
