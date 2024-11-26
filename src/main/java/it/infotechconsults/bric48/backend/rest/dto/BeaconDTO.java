@@ -9,6 +9,4 @@ public class BeaconDTO {
     private String name;
     private String serial;
     private Float threshold;
-
-    private String machineryId;
 }

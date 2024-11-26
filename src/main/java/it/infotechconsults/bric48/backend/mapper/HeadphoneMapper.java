@@ -5,8 +5,9 @@ import org.mapstruct.MappingConstants;
 
 import it.infotechconsults.bric48.backend.domain.Headphone;
 import it.infotechconsults.bric48.backend.rest.dto.HeadphoneDTO;
+import it.infotechconsults.bric48.backend.rest.dto.HeadphoneResponseDTO;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public abstract class HeadphoneMapper extends BaseMapper<HeadphoneDTO, Headphone, Headphone> {
+public abstract class HeadphoneMapper extends BaseMapper<HeadphoneDTO, Headphone, HeadphoneResponseDTO> {
 
 }

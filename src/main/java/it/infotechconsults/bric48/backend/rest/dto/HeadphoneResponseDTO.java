@@ -8,5 +8,4 @@ import lombok.Setter;
 public class HeadphoneResponseDTO extends BaseResponseDTO {
     private String name;
     private String serial;
-    private String userId;
 }
