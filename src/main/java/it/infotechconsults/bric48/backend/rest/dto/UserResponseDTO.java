@@ -1,5 +1,7 @@
 package it.infotechconsults.bric48.backend.rest.dto;
 
+import java.util.Set;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +15,6 @@ public class UserResponseDTO {
     private String phoneNumber;
     private String password;
     private RoleDTO role;
-    private String headphoneId;
+    private HeadphoneResponseDTO headphone;
+    private Set<MachineryResponseDTO> machineries;
 }

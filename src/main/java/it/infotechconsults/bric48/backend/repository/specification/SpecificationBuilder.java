@@ -71,6 +71,8 @@ public class SpecificationBuilder<T> {
             CriteriaQuery<?> query) {
         Path<?> path = getPath(root, criteria.getField(), query);
         switch (criteria.getOperation()) {
+            case IS_NULL:
+                return builder.isNull(path);
             case EQUAL:
                 return builder.equal(path, criteria.getValue());
             case EQUAL_IGNORECASE:

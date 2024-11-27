@@ -7,13 +7,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import it.infotechconsults.bric48.backend.domain.User;
+import it.infotechconsults.bric48.backend.exception.ResourceAlreadyExists;
 import it.infotechconsults.bric48.backend.mapper.UserMapper;
 import it.infotechconsults.bric48.backend.repository.EntityManagerRepository;
 import it.infotechconsults.bric48.backend.repository.UserRepository;
 import it.infotechconsults.bric48.backend.rest.dto.UserDTO;
 import it.infotechconsults.bric48.backend.rest.dto.UserResponseDTO;
 import it.infotechconsults.bric48.backend.rest.dto.UserSessionDTO;
-import jakarta.persistence.EntityExistsException;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -29,7 +29,7 @@ public class UserService extends AuditService<UserDTO, UserResponseDTO, User, St
     protected void checkSave(UserDTO dto) throws Exception {
         if (repository.exists((root, query, criteriaBuilder) -> criteriaBuilder
                 .equal(criteriaBuilder.lower(root.get("email")), dto.getEmail().toLowerCase())))
-            throw new EntityExistsException();
+            throw new ResourceAlreadyExists("Email already exists");
     }
 
     @Override
@@ -40,7 +40,7 @@ public class UserService extends AuditService<UserDTO, UserResponseDTO, User, St
                 criteriaBuilder.not(
                         criteriaBuilder.equal(criteriaBuilder.lower(root.get("id")),
                                 id.toLowerCase())))))
-            throw new EntityExistsException();
+            throw new ResourceAlreadyExists("Email already exists");
     }
 
     public Optional<UserSessionDTO> sessionByUsername(String username) throws UsernameNotFoundException {

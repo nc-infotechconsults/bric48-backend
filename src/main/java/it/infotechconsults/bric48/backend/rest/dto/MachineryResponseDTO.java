@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MachineryDTO {
+public class MachineryResponseDTO extends BaseResponseDTO{
     private String name;
     private String serial;
     private String description;
-    private String areaId;
-    private Set<String> beaconsId;
+    private AreaResponseDTO area;
+    private Set<BeaconResponseDTO> beacons;
 }
