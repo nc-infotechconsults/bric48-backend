@@ -7,14 +7,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponseDTO {
+public class UserResponseDTO extends BaseResponseDTO{
     private String name;
     private String surname;
     private String email;
     private String regNumber;
     private String phoneNumber;
-    private String password;
-    private RoleDTO role;
+    private RoleResponseDTO role;
     private HeadphoneResponseDTO headphone;
     private Set<MachineryResponseDTO> machineries;
 }

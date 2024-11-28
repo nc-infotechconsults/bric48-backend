@@ -1,5 +1,7 @@
 package it.infotechconsults.bric48.backend.rest.dto;
 
+import java.util.Set;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +16,5 @@ public class UserDTO {
     private String password;
     private String roleId;
     private String headphoneId;
+    private Set<String> machineriesId;
 }
