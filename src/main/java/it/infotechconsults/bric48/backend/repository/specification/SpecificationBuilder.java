@@ -3,6 +3,7 @@ package it.infotechconsults.bric48.backend.repository.specification;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.springframework.data.jpa.domain.Specification;
 
@@ -18,7 +19,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 public class SpecificationBuilder<T> {
-    
+
     public CriteriaQuery<Long> buildCountCriteriaQuery(FiltersDTO filters, CriteriaBuilder builder, Class<T> clazz) {
         CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
         Root<T> root = countQuery.from(clazz);
@@ -102,8 +103,8 @@ public class SpecificationBuilder<T> {
         Path<?> path = root;
 
         for (String part : parts) {
-            if (isCollectionField(root, part)) {
-                path = handleCollectionJoin(root, query, part);
+            if (isCollectionField(path, part)) {
+                path = handleCollectionJoin(path, query, part);
             } else {
                 path = path.get(part);
             }
@@ -144,16 +145,25 @@ public class SpecificationBuilder<T> {
 
     // Check if the field represents a collection (OneToMany or ManyToMany
     // relationship)
-    private boolean isCollectionField(Root<?> path, String field) {
-        Class<?> fieldClass = path.getModel().getAttribute(field).getJavaType();
+    private boolean isCollectionField(Path<?> path, String field) {
+        Class<?> fieldClass = Stream.of(path.getJavaType().getDeclaredFields()).filter(x -> x.getName().equals(field)).findFirst().get().getType();
         return List.class.isAssignableFrom(fieldClass) || Set.class.isAssignableFrom(fieldClass);
     }
 
     // Handle joining on collection fields and returning the joined path
-    private Path<?> handleCollectionJoin(Root<T> root, CriteriaQuery<?> query, String collectionField) {
-        Join<?, ?> join = root.join(collectionField, JoinType.LEFT);
-        query.distinct(true); // Avoid duplicate results when joining collections
-        return join;
+    private Path<?> handleCollectionJoin(Path<?> root, CriteriaQuery<?> query, String collectionField) {
+        Join<?, ?> join = null;
+        if (root instanceof Root)
+            join = ((Root<?>) root).join(collectionField, JoinType.LEFT);
+        else if (root instanceof Root)
+            join = ((Join<?, ?>) root).join(collectionField, JoinType.LEFT);
+
+        if (join != null) {
+            query.distinct(true); // Avoid duplicate results when joining collections
+            return join;
+        }
+
+        return root;
     }
 
 }

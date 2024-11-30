@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class MessageDTO {
     private String message;
-    private String receiver;
-    private String notificationId;
+    private String receiverId;
+    private String notificationId = "";
 }

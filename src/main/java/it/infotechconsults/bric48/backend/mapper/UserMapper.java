@@ -39,9 +39,9 @@ public abstract class UserMapper extends BaseMapper<UserDTO, User, UserResponseD
     protected MachineryRepository machineryRepository;
 
     @Override
-    @Mapping(target = "password", expression = "java(passwordEncoder.encode(request.getPassword()))")
+    @Mapping(target = "password", expression = "java(request.getPassword() != null && !request.getPassword().isBlank() ? passwordEncoder.encode(request.getPassword()) : null)")
     @Mapping(target = "role", expression = "java(roleRepository.findById(request.getRoleId()).orElse(null))")
-    @Mapping(target = "headphone", expression = "java(headphoneRepository.findById(request.getHeadphoneId()).orElse(null))")
+    @Mapping(target = "headphone", expression = "java(request.getHeadphoneId() != null ? headphoneRepository.findById(request.getHeadphoneId()).orElse(null) : null)")
     @Mapping(source = "machineriesId", target = "machineries", qualifiedByName = "mapMachineriesId")
     public abstract User requestToEntity(UserDTO request);
 
@@ -49,7 +49,7 @@ public abstract class UserMapper extends BaseMapper<UserDTO, User, UserResponseD
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "password", expression = "java(request.getPassword() != null && !request.getPassword().isBlank() ? passwordEncoder.encode(request.getPassword()) : entity.getPassword())")
     @Mapping(target = "role", expression = "java(roleRepository.findById(request.getRoleId()).orElse(null))")
-    @Mapping(target = "headphone", expression = "java(headphoneRepository.findById(request.getHeadphoneId()).orElse(null))")
+    @Mapping(target = "headphone", expression = "java(request.getHeadphoneId() != null ? headphoneRepository.findById(request.getHeadphoneId()).orElse(null) : null)")
     @Mapping(source = "machineriesId", target = "machineries", qualifiedByName = "mapMachineriesId")
     public abstract void updateEntity(@MappingTarget User entity, UserDTO request);
 
@@ -63,16 +63,6 @@ public abstract class UserMapper extends BaseMapper<UserDTO, User, UserResponseD
             return new HashSet<>();
     }
 
-    // protected Set<Machinery> updateMapMachineriesId(User entity, UserDTO request) {
-    //     entity.getMachineries().forEach(x -> {
-    //         var filtered = x.getUsers().stream().filter(u -> !u.getId().equals(entity.getId())).collect(Collectors.toSet());
-    //         x.setUsers(filtered);
-    //     });
 
-    //     if(Objects.nonNull(request.getBeaconsId()) && request.getBeaconsId().size() > 0)
-    //         return new HashSet<>(machineryRepository.findAll((root, query, cb) -> root.get("id").in(request.getBeaconsId())));
-    //     else
-    //         return new HashSet<>();
-    // }
 
 }
