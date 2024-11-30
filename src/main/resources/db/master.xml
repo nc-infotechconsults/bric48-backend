@@ -6,4 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <include file="db/changelog/00000000_0000_initial-schema.xml"/>
     <include file="db/changelog/00000000_0000_initial-data.xml"/>
+    <include file="db/changelog/20241130_1110_add-role-data.xml"/>
+    <include file="db/changelog/20241130_1110_changed-headphone-relation.xml"/>
+    <include file="db/changelog/20241130_1300_changed-machinery-user-relation.xml"/>
 </databaseChangeLog>

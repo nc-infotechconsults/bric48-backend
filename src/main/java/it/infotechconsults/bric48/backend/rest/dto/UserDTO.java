@@ -1,5 +1,6 @@
 package it.infotechconsults.bric48.backend.rest.dto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Getter;
@@ -15,6 +16,6 @@ public class UserDTO {
     private String phoneNumber;
     private String password;
     private String roleId;
-    private String headphoneId;
-    private Set<String> machineriesId;
+    private String headphoneId = "";
+    private Set<String> machineriesId = new HashSet<>();
 }

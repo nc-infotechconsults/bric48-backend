@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RoleResponseDTO extends BaseResponseDTO{
+public class RoleResponseDTO extends AuditResponseDTO {
     private String name;
     private String description;
 }

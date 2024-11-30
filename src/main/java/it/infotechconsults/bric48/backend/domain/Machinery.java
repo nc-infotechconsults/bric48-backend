@@ -8,7 +8,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -37,9 +36,6 @@ public class Machinery extends Audit {
     @JoinColumn(name = "area_id")
     private Area area;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "machinery_user", 
-        joinColumns = @JoinColumn(name = "machinery_id"), 
-        inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany(mappedBy = "machineries", fetch = FetchType.LAZY)
     private Set<User> users;
 }

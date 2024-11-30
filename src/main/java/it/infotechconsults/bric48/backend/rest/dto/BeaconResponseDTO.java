@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BeaconResponseDTO extends BaseResponseDTO {
+public class BeaconResponseDTO extends AuditResponseDTO {
     private String name;
     private String serial;
     private Float threshold;

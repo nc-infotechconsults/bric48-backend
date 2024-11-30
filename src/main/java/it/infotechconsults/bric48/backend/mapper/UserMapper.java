@@ -63,4 +63,16 @@ public abstract class UserMapper extends BaseMapper<UserDTO, User, UserResponseD
             return new HashSet<>();
     }
 
+    // protected Set<Machinery> updateMapMachineriesId(User entity, UserDTO request) {
+    //     entity.getMachineries().forEach(x -> {
+    //         var filtered = x.getUsers().stream().filter(u -> !u.getId().equals(entity.getId())).collect(Collectors.toSet());
+    //         x.setUsers(filtered);
+    //     });
+
+    //     if(Objects.nonNull(request.getBeaconsId()) && request.getBeaconsId().size() > 0)
+    //         return new HashSet<>(machineryRepository.findAll((root, query, cb) -> root.get("id").in(request.getBeaconsId())));
+    //     else
+    //         return new HashSet<>();
+    // }
+
 }

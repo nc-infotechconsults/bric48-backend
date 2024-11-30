@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="root (generated)" id="1732968042493-4">
+        <dropForeignKeyConstraint baseTableName="machinery_user" constraintName="FK7njvbhinpk1kbn5hjph2m1w1c"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1732968042493-5">
+        <dropForeignKeyConstraint baseTableName="machinery_user" constraintName="FKo6k4tjt1eexlv6ep4teq8xsmm"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1732968042493-1">
+        <createTable tableName="user_machinery">
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_machineryPK"/>
+            </column>
+            <column name="machinery_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_machineryPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="root (generated)" id="1732968042493-2">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_machinery" constraintName="FKkhutmuiy1wtm7m3pbetih06ok" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1732968042493-3">
+        <addForeignKeyConstraint baseColumnNames="machinery_id" baseTableName="user_machinery" constraintName="FKpqp97eil1u8sstuwiabbe9k8i" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="machinery" validate="true"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1732968042493-6">
+        <dropTable tableName="machinery_user"/>
+    </changeSet>
+</databaseChangeLog>

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class HeadphoneResponseDTO extends BaseResponseDTO {
+public class HeadphoneResponseDTO extends AuditResponseDTO {
     private String name;
     private String serial;
 }
