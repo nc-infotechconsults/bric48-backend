@@ -3,6 +3,7 @@ package it.infotechconsults.bric48.backend.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -50,11 +51,18 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(HttpMethod.POST, "/notification", "/auth/token")
+                        .requestMatchers(HttpMethod.POST, "/notification", "/auth/token", "/ws/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> {
+                    ex.authenticationEntryPoint(
+                            (request, response, authException) -> response.sendError(HttpStatus.UNAUTHORIZED.value(),
+                                    HttpStatus.UNAUTHORIZED.name()));
+                    ex.accessDeniedHandler((request, response, authException) -> response
+                            .sendError(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.name()));
+                })
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

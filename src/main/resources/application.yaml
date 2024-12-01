@@ -9,6 +9,11 @@ server:
   servlet:
     context-path: /api
 
+mqtt:
+  broker:
+    urL: tcp://localhost:1883
+    client-id: bric48-backend
+
 spring:
   devtools:
     restart:

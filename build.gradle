@@ -34,11 +34,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation ('org.springframework.boot:spring-boot-starter-web') {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
 	}
 	implementation 'org.springframework.boot:spring-boot-starter-undertow'
 	implementation 'org.liquibase:liquibase-core'
+
+	implementation 'org.springframework.security:spring-security-messaging:6.4.1'
+	implementation "org.springframework.integration:spring-integration-mqtt:6.4.0"
 
 	implementation "org.mapstruct:mapstruct:1.6.0"
 
@@ -98,20 +102,22 @@ bootRun {
     sourceResources sourceSets.main
 }
 
-task composeUpDb {
+task composeUp {
 	doLast {
+		def component = project.getProperty('component')
 		exec {
 			executable "docker"
-			args "compose", "-f", "src/main/docker/postgresql.yml", "up", "-d"
+			args "compose", "-f", "src/main/docker/" + component + ".yml", "up", "-d"
 		}
 	}
 }
 
 task composeDown {
 	doLast {
+		def component = project.getProperty('component')
 		exec {
 			executable "docker"
-			args "compose", "-f", "src/main/docker/postgresql.yml", "down"
+			args "compose", "-f", "src/main/docker/" + component + ".yml", "up", "-d"
 		}
 	}
 }

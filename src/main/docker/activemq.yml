@@ -1,0 +1,23 @@
+volumes:
+  activemq-data:
+  activemq-logs:
+
+services:
+  activemq:
+    image: rmohr/activemq:latest
+    container_name: activemq-broker
+    ports:
+      - "8161:8161"   # ActiveMQ Web Console
+      - "61616:61616" # OpenWire (default ActiveMQ protocol)
+      - "1883:1883"   # MQTT protocol
+      - "5672:5672"   # AMQP protocol
+      - "61613:61613" # STOMP protocol
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+      - ACTIVEMQ_NAME=localhost
+      - ACTIVEMQ_MQTT_PORT=1883
+      - ACTIVEMQ_STATIC_TOPICS=default/topic
+    volumes:
+      - activemq-data:/data
+      - activemq-logs:/var/log/activemq
