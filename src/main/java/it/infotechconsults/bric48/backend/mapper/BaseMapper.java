@@ -12,6 +12,10 @@ public abstract class BaseMapper<R, E, RS> {
     public abstract E requestToEntity(R request) throws Exception;
     @BeanMapping(nullValuePropertyMappingStrategy =  NullValuePropertyMappingStrategy.IGNORE)
     public abstract void updateEntity(@MappingTarget E entity, R request) throws Exception;
+
+    @BeanMapping(nullValuePropertyMappingStrategy =  NullValuePropertyMappingStrategy.IGNORE)
+    public abstract void patchEntity(@MappingTarget E entity, R request) throws Exception;
+
     public abstract RS entityToResponse(E entity) throws Exception;
     public abstract List<RS> entitiesToResponses(List<E> entity) throws Exception;
 

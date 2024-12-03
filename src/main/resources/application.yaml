@@ -11,6 +11,8 @@ server:
 
 mqtt:
   broker:
+    topic:
+      user-near-machinery: user-machinery
     urL: tcp://localhost:1883
     client-id: bric48-backend
 

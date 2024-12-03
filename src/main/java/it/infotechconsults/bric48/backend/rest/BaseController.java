@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,6 +35,12 @@ public abstract class BaseController<R, RS, E, ID> {
     @ResponseStatus(code = HttpStatus.OK)
     public RS update(@PathVariable("id") ID id, @Valid @RequestBody R dto) throws Exception {
         return mapper.entityToResponse(service.update(id, dto));
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public RS patch(@PathVariable("id") ID id, @Valid @RequestBody R dto) throws Exception {
+        return mapper.entityToResponse(service.patch(id, dto));
     }
 
     @DeleteMapping("/{id}")

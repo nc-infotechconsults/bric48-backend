@@ -47,6 +47,17 @@ public abstract class BaseService<R, RS, E, ID> {
         return entity;
     }
 
+    protected void checkPatch(ID id, R dto, E entity) throws Exception {
+    }
+
+    protected E beforePatch(E entity) {
+        return entity;
+    }
+
+    protected E afterPatch(E entity) {
+        return entity;
+    }
+
     protected void checkDelete(ID id, E entity) throws Exception {
     }
 
@@ -63,6 +74,14 @@ public abstract class BaseService<R, RS, E, ID> {
     }
 
     protected E afterSaveIntraservice(E entity) {
+        return entity;
+    }
+
+    protected E beforePatchIntraservice(E entity) {
+        return entity;
+    }
+
+    protected E afterPatchIntraservice(E entity) {
         return entity;
     }
 
@@ -114,6 +133,25 @@ public abstract class BaseService<R, RS, E, ID> {
             return newEntity;
         } catch (Exception e) {
             log.error("Error happen during update(): ", e.getMessage());
+            log.debug("Error stacktrace: ", e);
+            throw e;
+        }
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public E patch(ID id, R dto) throws Exception {
+        try {
+            E entityDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+            checkPatch(id, dto, entityDb);
+            mapper.patchEntity(entityDb, dto);
+            E entity = beforePatch(entityDb);
+            entity = beforePatchIntraservice(entity);
+            E newEntity = repository.saveAndFlush(entity);
+            newEntity = afterPatchIntraservice(newEntity);
+            newEntity = afterPatch(newEntity);
+            return newEntity;
+        } catch (Exception e) {
+            log.error("Error happen during patch(): ", e.getMessage());
             log.debug("Error stacktrace: ", e);
             throw e;
         }
