@@ -35,9 +35,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation ('org.springframework.boot:spring-boot-starter-web') {
-		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-	}
+	
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-undertow'
 	implementation 'org.liquibase:liquibase-core'
 
@@ -71,6 +70,14 @@ dependencies {
     liquibaseRuntime 'javax.xml.bind:jaxb-api'
     liquibaseRuntime 'org.hibernate:hibernate-core:6.6.2.Final'
     liquibaseRuntime sourceSets.main.output
+}
+
+configurations.implementation {
+    exclude (group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat')
+}
+
+configurations.compileOnly {
+    exclude (group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat')
 }
 
 diff.dependsOn compileJava

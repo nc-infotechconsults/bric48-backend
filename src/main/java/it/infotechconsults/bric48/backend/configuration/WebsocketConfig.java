@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSocketMessageBroker
-// @EnableWebSocketSecurity
 @RequiredArgsConstructor
 public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
@@ -20,8 +19,10 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").addInterceptors(new JwtAuthHandshake(jwtService)).setAllowedOriginPatterns("*")
-                .withSockJS();
+        registry
+                .addEndpoint("/ws")
+                .addInterceptors(new JwtAuthHandshake(jwtService))
+                .setAllowedOriginPatterns("*");
     }
 
     @Override
@@ -29,11 +30,5 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/topic");
         registry.setApplicationDestinationPrefixes("/app");
     }
-
-    // @Bean
-    // AuthorizationManager<Message<?>> messageAuthorizationManager(
-    //         MessageMatcherDelegatingAuthorizationManager.Builder messages) {
-    //     return messages.anyMessage().authenticated().build();
-    // }
 
 }

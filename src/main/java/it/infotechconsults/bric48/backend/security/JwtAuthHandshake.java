@@ -26,7 +26,7 @@ public class JwtAuthHandshake implements HandshakeInterceptor {
             jwt = authorizationHeader.substring(7);
             username = jwtService.extractUsername(jwt);
         }
-        if (jwt != null && jwtService.isTokenExpired(jwt)) {
+        if (jwt != null && !jwtService.isTokenExpired(jwt)) {
             attributes.put("user", username);
             return true;
         }

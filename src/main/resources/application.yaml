@@ -12,9 +12,14 @@ server:
 mqtt:
   broker:
     topic:
-      user-near-machinery: user-machinery
+      user-near-machinery: user-near-machinery
+      user-far-machinery: user-far-machinery
     urL: tcp://localhost:1883
     client-id: bric48-backend
+
+websocket:
+  topic:
+    machinery-users: machinery-users
 
 spring:
   devtools:
