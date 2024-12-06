@@ -5,11 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserSessionDTO {
+public class UserSessionDTO extends BaseResponseDTO{
     private String name;
     private String surname;
     private String email;
     private String regNumber;
     private String phoneNumber;
-    private RoleDTO role;
+    private RoleResponseDTO role;
 }

@@ -53,6 +53,11 @@ public abstract class UserMapper extends BaseMapper<UserDTO, User, UserResponseD
     @Mapping(source = "machineriesId", target = "machineries", qualifiedByName = "mapMachineriesId")
     public abstract void updateEntity(@MappingTarget User entity, UserDTO request);
 
+    @Override
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "password", expression = "java(request.getPassword() != null && !request.getPassword().isBlank() ? passwordEncoder.encode(request.getPassword()) : entity.getPassword())")
+    public abstract void patchEntity(@MappingTarget User entity, UserDTO request) throws Exception;
+
     public abstract UserSessionDTO entityToSession(User entity);
 
     @Named("mapMachineriesId")

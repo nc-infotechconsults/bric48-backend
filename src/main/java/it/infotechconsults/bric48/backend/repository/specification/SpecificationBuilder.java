@@ -1,7 +1,9 @@
 package it.infotechconsults.bric48.backend.repository.specification;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -146,8 +148,13 @@ public class SpecificationBuilder<T> {
     // Check if the field represents a collection (OneToMany or ManyToMany
     // relationship)
     private boolean isCollectionField(Path<?> path, String field) {
-        Class<?> fieldClass = Stream.of(path.getJavaType().getDeclaredFields()).filter(x -> x.getName().equals(field)).findFirst().get().getType();
-        return List.class.isAssignableFrom(fieldClass) || Set.class.isAssignableFrom(fieldClass);
+        
+        Optional<Field> fieldClass = Stream.of(path.getJavaType().getDeclaredFields()).filter(x -> x.getName().equals(field)).findFirst();
+        if(fieldClass.isPresent()) {
+            Class<?> clazz = fieldClass.get().getType();
+            return List.class.isAssignableFrom(clazz) || Set.class.isAssignableFrom(clazz);
+        }
+        return false;   
     }
 
     // Handle joining on collection fields and returning the joined path
