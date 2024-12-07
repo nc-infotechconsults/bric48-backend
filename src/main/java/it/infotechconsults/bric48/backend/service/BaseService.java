@@ -28,76 +28,76 @@ public abstract class BaseService<R, RS, E, ID> {
     protected void checkSave(R dto) throws Exception {
     }
 
-    protected E beforeSave(E entity) {
+    protected E beforeSave(E entity) throws Exception {
         return entity;
     }
 
-    protected E afterSave(E entity) {
+    protected E afterSave(E entity) throws Exception {
         return entity;
     }
 
     protected void checkUpdate(ID id, R dto, E entity) throws Exception {
     }
 
-    protected E beforeUpdate(E entity) {
+    protected E beforeUpdate(E entity) throws Exception {
         return entity;
     }
 
-    protected E afterUpdate(E entity) {
+    protected E afterUpdate(E entity) throws Exception {
         return entity;
     }
 
     protected void checkPatch(ID id, R dto, E entity) throws Exception {
     }
 
-    protected E beforePatch(E entity) {
+    protected E beforePatch(E entity) throws Exception {
         return entity;
     }
 
-    protected E afterPatch(E entity) {
+    protected E afterPatch(E entity) throws Exception {
         return entity;
     }
 
     protected void checkDelete(ID id, E entity) throws Exception {
     }
 
-    protected E beforeDelete(E entity) {
+    protected E beforeDelete(E entity) throws Exception {
         return entity;
     }
 
-    protected void afterDelete(E entity) {
+    protected void afterDelete(E entity) throws Exception {
     }
 
     // method called for intermediate business logic
-    protected E beforeSaveIntraservice(E entity) {
+    protected E beforeSaveIntraservice(E entity) throws Exception {
         return entity;
     }
 
-    protected E afterSaveIntraservice(E entity) {
+    protected E afterSaveIntraservice(E entity) throws Exception {
         return entity;
     }
 
-    protected E beforePatchIntraservice(E entity) {
+    protected E beforePatchIntraservice(E entity) throws Exception {
         return entity;
     }
 
-    protected E afterPatchIntraservice(E entity) {
+    protected E afterPatchIntraservice(E entity) throws Exception {
         return entity;
     }
 
-    protected E beforeUpdateIntraservice(E entity) {
+    protected E beforeUpdateIntraservice(E entity) throws Exception {
         return entity;
     }
 
-    protected E afterUpdateIntraservice(E entity) {
+    protected E afterUpdateIntraservice(E entity) throws Exception {
         return entity;
     }
 
-    protected E beforeDeleteIntraservice(E entity) {
+    protected E beforeDeleteIntraservice(E entity) throws Exception {
         return entity;
     };
 
-    protected E afterDeleteIntraservice(E entity) {
+    protected E afterDeleteIntraservice(E entity) throws Exception {
         return entity;
     };
 

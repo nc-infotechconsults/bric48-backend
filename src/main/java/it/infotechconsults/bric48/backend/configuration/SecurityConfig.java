@@ -51,7 +51,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(HttpMethod.POST, "/notification", "/auth/token").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/machineryNotifications", "/auth/token").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .anyRequest()
                         .authenticated())
