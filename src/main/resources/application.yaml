@@ -20,7 +20,7 @@ mqtt:
 
 websocket:
   topic:
-    machinery-users: machinery-users
+    machinery-users: /machinery-users
 
 spring:
   devtools:

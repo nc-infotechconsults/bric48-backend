@@ -32,6 +32,9 @@ public class Machinery extends Audit {
     @OneToMany(mappedBy = "machinery")
     private Set<Beacon> beacons;
 
+    @OneToMany(mappedBy = "machinery")
+    private Set<MachineryNotification> machineryNotifications;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "area_id")
     private Area area;
