@@ -11,6 +11,8 @@ import it.infotechconsults.bric48.backend.repository.EntityManagerRepository;
 import it.infotechconsults.bric48.backend.repository.MachineryNotificationRepository;
 import it.infotechconsults.bric48.backend.rest.dto.MachineryNotificationDTO;
 import it.infotechconsults.bric48.backend.rest.dto.MachineryNotificationResponseDTO;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -36,6 +38,13 @@ public class MachineryNotificationService
         simpMessagingTemplate.convertAndSend("/notification/administrators", mapper.entityToResponse(entity));
 
         return entity;
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public void resolve(String id){
+        MachineryNotification entityDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        entityDb.setSolved(true);
+        repository.saveAndFlush(entityDb);
     }
 
 }

@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,8 +29,7 @@ public class Message extends BaseEntity {
     @JoinColumn(name = "receiver_user_id")
     private User receiver;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "notification_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private MachineryNotification notification;
 
 }

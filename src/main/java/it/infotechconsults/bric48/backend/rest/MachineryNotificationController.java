@@ -1,6 +1,10 @@
 package it.infotechconsults.bric48.backend.rest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.infotechconsults.bric48.backend.domain.MachineryNotification;
@@ -15,6 +19,12 @@ public class MachineryNotificationController extends BaseController<MachineryNot
     
     public MachineryNotificationController(MachineryNotificationService service, MachineryNotificationMapper mapper){
         super(service, mapper);
+    }
+
+    @PatchMapping("/{id}/solve")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void resolve(@PathVariable("id") String id) throws Exception {
+        ((MachineryNotificationService)service).resolve(id);
     }
 
 }
