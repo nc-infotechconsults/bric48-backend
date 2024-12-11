@@ -1,6 +1,9 @@
 package it.infotechconsults.bric48.backend.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -184,10 +187,23 @@ public abstract class BaseService<R, RS, E, ID> {
         }else{
             SpecificationBuilder<E> specBuilder = new SpecificationBuilder<>();
             Specification <E> spec = specBuilder.buildSpecification(filters);
-            if(spec != null)
-                return repository.findAll(spec, pageable);
-            else
-                return repository.findAll(pageable);
+            
+            if(spec != null){
+                if(pageable.isUnpaged()){
+                    List<E> items = repository.findAll(spec, pageable.getSort());
+                    return new PageImpl<E>(items, pageable, items.size());
+                }else{
+                    return repository.findAll(spec, pageable);
+                }
+            }else{
+                if(pageable.isUnpaged()){
+                    List<E> items = repository.findAll(pageable.getSort());
+                    return new PageImpl<E>(items, pageable, items.size());
+                }else{
+                    return repository.findAll(pageable);
+                }
+            }
+                
         }
     }
 }

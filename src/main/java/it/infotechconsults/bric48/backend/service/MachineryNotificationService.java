@@ -32,7 +32,7 @@ public class MachineryNotificationService
     @Override
     protected MachineryNotification afterSave(MachineryNotification entity) throws Exception {
         for (User x : entity.getMachinery().getUsers()) {
-            simpMessagingTemplate.convertAndSend("/notification" + x.getId(), mapper.entityToResponse(entity));
+            simpMessagingTemplate.convertAndSend("/notification/" + x.getId(), mapper.entityToResponse(entity));
         }
 
         simpMessagingTemplate.convertAndSend("/notification/administrators", mapper.entityToResponse(entity));
@@ -41,10 +41,17 @@ public class MachineryNotificationService
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public void resolve(String id){
+    public void resolve(String id) throws Exception {
         MachineryNotification entityDb = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         entityDb.setSolved(true);
         repository.saveAndFlush(entityDb);
+
+        for (User x : entityDb.getMachinery().getUsers()) {
+            simpMessagingTemplate.convertAndSend("/notification/solved/" + x.getId(),
+                    mapper.entityToResponse(entityDb));
+        }
+
+        simpMessagingTemplate.convertAndSend("/notification/solved/administrators", mapper.entityToResponse(entityDb));
     }
 
 }

@@ -162,15 +162,15 @@ public class SpecificationBuilder<T> {
         Join<?, ?> join = null;
         if (root instanceof Root)
             join = ((Root<?>) root).join(collectionField, JoinType.LEFT);
-        else if (root instanceof Root)
+        else if (root instanceof Join)
             join = ((Join<?, ?>) root).join(collectionField, JoinType.LEFT);
 
         if (join != null) {
             query.distinct(true); // Avoid duplicate results when joining collections
             return join;
+        }else{
+            return root.get(collectionField);
         }
-
-        return root;
     }
 
 }

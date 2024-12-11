@@ -97,24 +97,27 @@ public class MqttService implements ApplicationListener<MqttEvent> {
                     } else {
                         userIds = new HashSet<>();
                     }
-                    Optional<User> user = userRepository.findById(m.getUserId());
-                    if (user.isPresent()) {
-                        userIds.add(userMapper.entityToResponse(user.get()));
-                        userNearMachineries.put(m.getMachineryId(), userIds);
+                    if (!userIds.stream().anyMatch(t -> t.getId().equals(m.getUserId()))) {
+                        Optional<User> user = userRepository.findById(m.getUserId());
+                        if (user.isPresent()) {
+                            userIds.add(userMapper.entityToResponse(user.get()));
+                            userNearMachineries.put(m.getMachineryId(), userIds);
+                        }
                     }
 
-                    simpMessagingTemplate.convertAndSend(machineryUsers + "/" + m.getMachineryId(), userNearMachineries);
+                    simpMessagingTemplate.convertAndSend(machineryUsers, userNearMachineries);
                     break;
                 }
                 case "user-far-machinery": {
-                    MqttUserMachineryMessage m = (MqttUserMachineryMessage) event.getMessage().getPayload();
+                    MqttUserMachineryMessage m = objectMapper.readValue((String) event.getMessage().getPayload(),
+                            MqttUserMachineryMessage.class);
                     if (userNearMachineries.containsKey(m.getMachineryId())) {
                         Set<UserResponseDTO> userIds = userNearMachineries.get(m.getMachineryId()).stream()
                                 .filter(x -> !x.getId().equals(m.getUserId())).collect(Collectors.toSet());
                         userNearMachineries.put(m.getMachineryId(), userIds);
                     }
 
-                    simpMessagingTemplate.convertAndSend(machineryUsers + "/" + m.getMachineryId(), userNearMachineries);
+                    simpMessagingTemplate.convertAndSend(machineryUsers, userNearMachineries);
                     break;
                 }
                 default:
