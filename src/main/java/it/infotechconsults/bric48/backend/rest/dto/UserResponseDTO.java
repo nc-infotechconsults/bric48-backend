@@ -11,6 +11,7 @@ public class UserResponseDTO extends AuditResponseDTO {
     private String name;
     private String surname;
     private String email;
+    private String language;
     private String regNumber;
     private String phoneNumber;
     private RoleResponseDTO role;

@@ -12,11 +12,19 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class DefaultMessageService extends AuditService<DefaultMessageDTO, DefaultMessageResponseDTO, DefaultMessage, String> {
+public class DefaultMessageService
+        extends AuditService<DefaultMessageDTO, DefaultMessageResponseDTO, DefaultMessage, String> {
 
-    public DefaultMessageService(DefaultMessageRepository repository, EntityManagerRepository<DefaultMessage> eRepository, DefaultMessageMapper mapper) {
+    public DefaultMessageService(DefaultMessageRepository repository,
+            EntityManagerRepository<DefaultMessage> eRepository, DefaultMessageMapper mapper) {
         super(repository, eRepository, mapper);
         this.entityClass = DefaultMessage.class;
+    }
+
+    @Override
+    protected DefaultMessage beforeUpdate(DefaultMessage entity) throws Exception {
+        entity.getTranslations().forEach(t -> t.setDefaultMessage(entity));
+        return entity;
     }
 
 }

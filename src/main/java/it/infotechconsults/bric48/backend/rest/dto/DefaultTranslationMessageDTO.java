@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MessageDTO {
-    private String message;
+public class DefaultTranslationMessageDTO {
     private String language;
-    private String receiverId;
-    private String notificationId = "";
+    private Boolean isDefault;
+    private String message;
 }

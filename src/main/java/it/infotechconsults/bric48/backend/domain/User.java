@@ -32,6 +32,9 @@ public class User extends Audit {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "language")
+    private String language;
+
     @Column(name = "reg_number")
     private String regNumber;
 

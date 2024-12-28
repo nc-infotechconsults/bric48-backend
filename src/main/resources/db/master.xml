@@ -11,4 +11,7 @@
     <include file="db/changelog/20241130_1300_changed-machinery-user-relation.xml"/>
     <include file="db/changelog/20241130_1623_added-default-message.xml"/>
     <include file="db/changelog/20241211_0950_changed-relationship.xml"/>
+    <include file="db/changelog/20241228_1606_added-entities.xml"/>
+    <include file="db/changelog/20241228_1821_removed-audit-data.xml"/>
+    <include file="db/changelog/20241228_2000_added-field.xml"/>
 </databaseChangeLog>

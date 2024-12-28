@@ -1,5 +1,7 @@
 package it.infotechconsults.bric48.backend.service;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,8 @@ public class MessageService extends BaseService<MessageDTO, MessageResponseDTO, 
         if(entity.getNotification() != null){
             mqttService.sendMessageToTopic(entity.getNotification().getMachinery().getSerial(), entity.getNotification().getDescription());
         }else{
-            mqttService.sendMessageToTopic(entity.getReceiver().getHeadphone().getSerial(), entity.getMessage());
+            if(Objects.nonNull(entity.getReceiver().getHeadphone()))
+                mqttService.sendMessageToTopic(entity.getReceiver().getHeadphone().getSerial(), entity.getMessage());
         }
         return entity;
     }

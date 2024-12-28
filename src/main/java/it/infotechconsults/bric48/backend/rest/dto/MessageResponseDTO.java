@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class MessageResponseDTO extends BaseResponseDTO {
     private String message;
+    private String language;
     private Instant sentAt;
     private UserResponseDTO receiver;
     private UserResponseDTO sender;

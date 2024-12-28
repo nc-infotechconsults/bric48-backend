@@ -1,0 +1,39 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="root (generated)" id="1735406435322-1">
+        <dropColumn columnName="created_at" tableName="default_translation_message"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-2">
+        <dropColumn columnName="created_at" tableName="notification_translation"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-3">
+        <dropColumn columnName="created_by" tableName="default_translation_message"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-4">
+        <dropColumn columnName="created_by" tableName="notification_translation"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-5">
+        <dropColumn columnName="deleted_at" tableName="default_translation_message"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-6">
+        <dropColumn columnName="deleted_at" tableName="notification_translation"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-7">
+        <dropColumn columnName="deleted_by" tableName="default_translation_message"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-8">
+        <dropColumn columnName="deleted_by" tableName="notification_translation"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-9">
+        <dropColumn columnName="updated_at" tableName="default_translation_message"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-10">
+        <dropColumn columnName="updated_at" tableName="notification_translation"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-11">
+        <dropColumn columnName="updated_by" tableName="default_translation_message"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735406435322-12">
+        <dropColumn columnName="updated_by" tableName="notification_translation"/>
+    </changeSet>
+</databaseChangeLog>

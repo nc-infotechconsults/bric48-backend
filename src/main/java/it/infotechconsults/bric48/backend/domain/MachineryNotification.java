@@ -20,6 +20,9 @@ public class MachineryNotification extends BaseEntity {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "code")
+    private String code;
+
     @Column(name = "value")
     private String value;
 

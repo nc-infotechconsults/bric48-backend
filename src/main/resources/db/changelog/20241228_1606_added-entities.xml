@@ -1,0 +1,74 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="root (generated)" id="1735398326064-1">
+        <createTable tableName="default_translation_message">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="default_translation_messagePK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="deleted_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="deleted_by" type="VARCHAR(255)"/>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="language" type="VARCHAR(255)"/>
+            <column name="message" type="TEXT"/>
+            <column name="default_message_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735398326064-2">
+        <createTable tableName="notification_code">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="notification_codePK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="deleted_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="deleted_by" type="VARCHAR(255)"/>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735398326064-3">
+        <createTable tableName="notification_translation">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="notification_translationPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="deleted_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="deleted_by" type="VARCHAR(255)"/>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="language" type="VARCHAR(255)"/>
+            <column name="message" type="TEXT"/>
+            <column name="notification_code_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735398326064-4">
+        <addColumn tableName="machinery_notification">
+            <column name="code" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735398326064-5">
+        <addColumn tableName="message">
+            <column name="language" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735398326064-6">
+        <addColumn tableName="user">
+            <column name="language" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735398326064-7">
+        <addForeignKeyConstraint baseColumnNames="default_message_id" baseTableName="default_translation_message" constraintName="FKfpuv1c5f5s2eyr9p5sichumtj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="default_message" validate="true"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735398326064-8">
+        <addForeignKeyConstraint baseColumnNames="notification_code_id" baseTableName="notification_translation" constraintName="FKt6xre9nrdd8ltyestmbld7bpo" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="notification_code" validate="true"/>
+    </changeSet>
+    <changeSet author="root (generated)" id="1735398326064-9">
+        <dropColumn columnName="message" tableName="default_message"/>
+    </changeSet>
+</databaseChangeLog>

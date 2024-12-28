@@ -16,6 +16,7 @@ public class UserDTO {
     private String phoneNumber;
     private String password;
     private String roleId;
+    private String language;
     private String headphoneId = "";
     private Set<String> machineriesId = new HashSet<>();
 }

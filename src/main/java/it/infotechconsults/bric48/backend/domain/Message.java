@@ -18,6 +18,9 @@ public class Message extends BaseEntity {
     @Column(name = "message", columnDefinition = "text")
     private String message;
 
+    @Column(name = "language")
+    private String language;
+
     @Column(name = "sent_at")
     private Instant sentAt;
 
