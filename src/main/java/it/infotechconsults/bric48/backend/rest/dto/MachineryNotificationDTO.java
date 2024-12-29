@@ -8,6 +8,7 @@ import lombok.Setter;
 public class MachineryNotificationDTO {
     private String type;
     private String value;
+    private String code;
     private String description;
     private String mserial;
     private String isSolved;

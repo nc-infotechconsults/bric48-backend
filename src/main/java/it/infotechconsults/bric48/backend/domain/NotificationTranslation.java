@@ -16,6 +16,9 @@ public class NotificationTranslation extends BaseEntity {
     @Column(name = "language")
     private String language;
 
+    @Column(name = "is_default")
+    private Boolean isDefault;
+
     @Column(name = "message", columnDefinition = "text")
     private String message;
 

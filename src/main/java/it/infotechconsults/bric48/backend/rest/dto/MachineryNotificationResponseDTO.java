@@ -10,6 +10,7 @@ import lombok.Setter;
 public class MachineryNotificationResponseDTO extends BaseResponseDTO{
     private String type;
     private String value;
+    private String code;
     private String description;
     private MachineryResponseDTO machinery;
     private Boolean solved;
