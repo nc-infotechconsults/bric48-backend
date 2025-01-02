@@ -14,36 +14,39 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class NotificationCodeService
-        extends AuditService<NotificationCodeDTO, NotificationCodeResponseDTO, NotificationCode, String> {
+                extends AuditService<NotificationCodeDTO, NotificationCodeResponseDTO, NotificationCode, String> {
 
-    public NotificationCodeService(NotificationCodeRepository repository,
-            EntityManagerRepository<NotificationCode> eRepository, NotificationCodeMapper mapper) {
-        super(repository, eRepository, mapper);
-        this.entityClass = NotificationCode.class;
-    }
+        public NotificationCodeService(NotificationCodeRepository repository,
+                        EntityManagerRepository<NotificationCode> eRepository, NotificationCodeMapper mapper) {
+                super(repository, eRepository, mapper);
+                this.entityClass = NotificationCode.class;
+        }
 
-    @Override
-    protected void checkSave(NotificationCodeDTO dto) throws Exception {
-        if (repository.exists((root, query, criteriaBuilder) -> criteriaBuilder
-                .equal(criteriaBuilder.lower(root.get("code")), dto.getCode().toLowerCase())))
-            throw new ResourceAlreadyExists("Code already exists");
-    }
+        @Override
+        protected void checkSave(NotificationCodeDTO dto) throws Exception {
+                if (repository.exists((root, query, cb) -> cb.and(
+                                cb.equal(cb.lower(root.get("type")), dto.getType().toLowerCase()),
+                                cb.equal(cb.lower(root.get("value")), dto.getValue().toLowerCase()))))
+                        throw new ResourceAlreadyExists("Type and value already exists");
+        }
 
-    @Override
-    protected void checkUpdate(String id, NotificationCodeDTO dto, NotificationCode entity) throws Exception {
-        if (repository.exists((root, query, criteriaBuilder) -> criteriaBuilder.and(
-                criteriaBuilder.equal(
-                        criteriaBuilder.lower(root.get("code")), dto.getCode().toLowerCase()),
-                criteriaBuilder.not(
-                        criteriaBuilder.equal(criteriaBuilder.lower(root.get("id")),
-                                id.toLowerCase())))))
-            throw new ResourceAlreadyExists("Code already exists");
-    }
+        @Override
+        protected void checkUpdate(String id, NotificationCodeDTO dto, NotificationCode entity) throws Exception {
+                if (repository.exists((root, query, criteriaBuilder) -> criteriaBuilder.and(
+                                criteriaBuilder.equal(criteriaBuilder.lower(root.get("type")),
+                                                dto.getType().toLowerCase()),
+                                criteriaBuilder.equal(criteriaBuilder.lower(root.get("value")),
+                                                dto.getValue().toLowerCase()),
+                                criteriaBuilder.not(
+                                                criteriaBuilder.equal(criteriaBuilder.lower(root.get("id")),
+                                                                id.toLowerCase())))))
+                        throw new ResourceAlreadyExists("Type and value already exists");
+        }
 
-    @Override
-    protected NotificationCode beforeUpdate(NotificationCode entity) throws Exception {
-        entity.getTranslations().forEach(t -> t.setNotificationCode(entity));
-        return entity;
-    }
+        @Override
+        protected NotificationCode beforeUpdate(NotificationCode entity) throws Exception {
+                entity.getTranslations().forEach(t -> t.setNotificationCode(entity));
+                return entity;
+        }
 
 }

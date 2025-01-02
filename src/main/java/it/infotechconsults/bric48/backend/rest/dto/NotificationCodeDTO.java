@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class NotificationCodeDTO {
     private String title;
-    private String code;
+    private String type;
+    private String value;
     private Set<NotificationTranslationDTO> translations;
 }

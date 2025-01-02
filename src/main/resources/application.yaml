@@ -11,11 +11,12 @@ server:
     context-path: /api
 
 mqtt:
+  default-language: it
   broker:
     topic:
       user-near-machinery: user-near-machinery
       user-far-machinery: user-far-machinery
-    urL: tcp://localhost:1883
+    urL: tcp://${MQTT_HOST:localhost}:${MQTT_PORT:1883}
     client-id: bric48-backend
 
 websocket:
@@ -31,9 +32,9 @@ spring:
     change-log: classpath:db/master.xml
     
   datasource:
-    url: jdbc:postgresql://localhost:5432/bric48db
-    username: dbuser
-    password: password
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_DBNAME:bric48db}
+    username: ${DB_USER:dbuser}
+    password: ${DB_PWD:password}
   jpa:
     hibernate:
       ddl-auto: none

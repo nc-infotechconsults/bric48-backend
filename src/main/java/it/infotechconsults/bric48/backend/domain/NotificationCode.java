@@ -21,8 +21,11 @@ public class NotificationCode extends Audit {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "code")
-    private String code;
+    @Column(name = "type")
+    private String type;
+    
+    @Column(name = "value")
+    private String value;
     
     @OneToMany(mappedBy = "notificationCode", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<NotificationTranslation> translations;

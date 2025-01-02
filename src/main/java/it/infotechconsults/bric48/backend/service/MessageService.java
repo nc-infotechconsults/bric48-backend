@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +19,6 @@ import it.infotechconsults.bric48.backend.repository.MessageRepository;
 import it.infotechconsults.bric48.backend.repository.NotificationCodeRepository;
 import it.infotechconsults.bric48.backend.rest.dto.MessageDTO;
 import it.infotechconsults.bric48.backend.rest.dto.MessageResponseDTO;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -34,6 +34,9 @@ public class MessageService extends BaseService<MessageDTO, MessageResponseDTO, 
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Value("${mqtt.default-language}")
+    private String defaultLang;
+
     public MessageService(MessageRepository repository, EntityManagerRepository<Message> eRepository,
             MessageMapper mapper) {
         super(repository, eRepository, mapper);
@@ -44,7 +47,8 @@ public class MessageService extends BaseService<MessageDTO, MessageResponseDTO, 
     protected Message beforeSave(Message entity) throws Exception {
         if (Objects.nonNull(entity.getNotification())) {
             Optional<NotificationCode> notificationCode = notificationCodeRepository.findBy(
-                    (root, query, cb) -> cb.equal(root.get("code"), entity.getNotification().getCode()),
+                    (root, query, cb) -> cb.and(cb.equal(root.get("type"), entity.getNotification().getType()),
+                            cb.equal(root.get("value"), entity.getNotification().getValue())),
                     t -> t.first());
             notificationCode.ifPresentOrElse(t -> {
                 Optional<NotificationTranslation> transNot = t.getTranslations().stream()
@@ -57,7 +61,8 @@ public class MessageService extends BaseService<MessageDTO, MessageResponseDTO, 
                 entity.setMessage(transNot.get().getMessage());
                 entity.setLanguage(transNot.get().getLanguage());
             }, () -> {
-                throw new EntityNotFoundException();
+                entity.setLanguage(defaultLang);
+                entity.setMessage(entity.getNotification().getDescription());
             });
         }
         return entity;
