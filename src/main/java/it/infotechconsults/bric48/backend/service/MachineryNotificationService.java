@@ -37,6 +37,33 @@ public class MachineryNotificationService
 
         simpMessagingTemplate.convertAndSend("/notification/administrators", mapper.entityToResponse(entity));
 
+        if (entity.getType().equals("status")) {
+            ((MachineryNotificationRepository) repository).findAll((root, query, criteriaBuilder) -> {
+                return criteriaBuilder.and(
+                        criteriaBuilder.notEqual(root.get("id"), entity.getId()),
+                        criteriaBuilder.equal(root.get("machinery").get("id"), entity.getMachinery().getId()),
+                        criteriaBuilder.equal(root.get("type"), "status"),
+                        criteriaBuilder.equal(root.get("solved"), false));
+            }).forEach(x -> {
+                x.setSolved(true);
+                repository.saveAndFlush(x);
+            });
+        }
+
+        if (entity.getType().equals("guards")) {
+            ((MachineryNotificationRepository) repository).findAll((root, query, criteriaBuilder) -> {
+                return criteriaBuilder.and(
+                        criteriaBuilder.notEqual(root.get("id"), entity.getId()),
+                        criteriaBuilder.equal(root.get("machinery").get("id"), entity.getMachinery().getId()),
+                        criteriaBuilder.equal(root.get("type"), "guards"),
+                        criteriaBuilder.equal(root.get("description"), entity.getDescription()),
+                        criteriaBuilder.equal(root.get("solved"), false));
+            }).forEach(x -> {
+                x.setSolved(true);
+                repository.saveAndFlush(x);
+            });
+        }
+
         return entity;
     }
 
